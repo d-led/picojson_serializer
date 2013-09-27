@@ -48,7 +48,7 @@ struct NamedPoint {
 };
 ````
 
-**TODO**: specializations for standard containers
+To enable `std::vector` serialization, use the header `picojson_vector_serializer.h`
 
 serializing
 -----------
