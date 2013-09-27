@@ -1,5 +1,5 @@
 /**
-* picojson_serializer - a rapid simple serialization solution based on picojson
+* picojson_serializer - a simple serialization solution based on picojson
 * --------------------------------------------------------
 * Copyright (C) 2013, Dmitry Ledentsov (d.ledentsov@gmail.com)
 *
