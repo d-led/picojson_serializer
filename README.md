@@ -1,7 +1,7 @@
 picojson serializer
 ===================
 
-This is a 2-header-only solution for serializing objects to and from json using a header-only library [picojson](https://github.com/kazuho/picojson). 
+This is a lightweight header-only solution for serializing objects to and from json using the header-only library [picojson](https://github.com/kazuho/picojson). 
 
 usage
 =====
