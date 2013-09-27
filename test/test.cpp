@@ -2,6 +2,7 @@
 #include <catch.hpp>
 
 #include "../picojson_serializer.h"
+#include "test_helpers.h"
 
 namespace {
     struct Point {
@@ -29,41 +30,6 @@ namespace {
             ar & picojson::convert::member("point", point);
         }
     };
-
-    template <typename T>
-    bool has(picojson::object const& o, std::string const& key) {
-        picojson::object::const_iterator found = o.find(key);
-        if ( found == o.end() )
-            return false;
-
-        if ( !found->second.is<T>() )
-            return false;
-
-        return true;
-    }
-
-    template <typename T, typename TValue>
-    bool has(picojson::object const& o, std::string const& key, TValue v) {
-        if ( !has<T>(o, key) )
-            return false;
-        return o.find(key)->second.get<T>() == v;
-    }
-
-    template <typename T, typename TValue>
-    bool has(picojson::value const& ov, std::string const& key, TValue v) {
-        if ( !ov.is<picojson::object>() )
-            return false;
-
-        return has<T>(ov.get<picojson::object>(), key, v);
-    }
-
-    template <typename T>
-    bool has(picojson::value const& ov, std::string const& key) {
-        if ( !ov.is<picojson::object>() )
-            return false;
-
-        return has<T>(ov.get<picojson::object>(), key);
-    }
 }
 
 TEST_CASE() {

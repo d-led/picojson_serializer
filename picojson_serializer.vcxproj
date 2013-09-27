@@ -87,9 +87,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="test\test.cpp" />
+    <ClCompile Include="test\vector_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="picojson_serializer.h" />
+    <ClInclude Include="picojson_vector_serializer.h" />
+    <ClInclude Include="test\test_helpers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
