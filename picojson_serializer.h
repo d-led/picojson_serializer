@@ -12,6 +12,7 @@
 
 #include "picojson.h"
 #include <string>
+#include <type_traits>
 
 namespace picojson {
     namespace convert {
@@ -54,8 +55,8 @@ namespace picojson {
         };
 
         template <typename T>
-        void from_value(value& v,T& t) {
-            value_converter<T>::from_value(v,t);
+        void from_value(value const& v, T& t) {
+            value_converter<T>::from_value(v, t);
         };
 
         class access {
@@ -85,6 +86,43 @@ namespace picojson {
         };
 
         template <typename T>
+        class write_access {
+            T& t;
+            value const& v;
+
+            template <typename V>
+            struct standard_value;
+            template<> struct standard_value<int> { static void get(value const& v_, int& v){ from_value(v_, v); } };
+            template<> struct standard_value<double> { static void get(value const& v_, double& v){ from_value(v_, v); } };
+            template<> struct standard_value<bool> { static void get(value const& v_, bool& v){ from_value(v_, v); } };
+            template<> struct standard_value<std::string> { static void get(value const& v_, std::string& v){ from_value(v_, v); } };
+            template <typename V>
+            struct standard_value { static void get(value const& v_, V& v){} };
+
+        public:
+            write_access(value const& v_,T& t_) :t(t_),v(v_){}
+
+            template<typename T>
+            void operator & (key_value<T>& kv) {
+                if ( !v.is<picojson::object>() )
+                    return;
+
+                picojson::object const& o = v.get<picojson::object>();
+                picojson::object::const_iterator found =
+                    o.find(kv.key);
+                if ( found == o.end() )
+                    return;
+
+                if ( found->second.is<picojson::object>() ) {
+                    from_value(found->second, kv.value);
+                    return;
+                }
+
+                standard_value<T>::get(found->second, kv.value);
+            }
+        };
+
+        template <typename T>
         struct value_converter {
             static value to_value(T& v) {
                 access a(true);
@@ -93,7 +131,7 @@ namespace picojson {
             }
 
             static void from_value(value const& ov, T& v) {
-                access a(false);
+                write_access<T> a(ov,v);
                 v.json(a);
             }
         };
@@ -107,7 +145,7 @@ namespace picojson {
 
         template < typename T>
         void from_string(value const& v,T& t) {
-            access a(false);
+            write_access a(v, t);
             t.json(a);
         }
     }
