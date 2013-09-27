@@ -83,23 +83,36 @@ TEST_CASE() {
         CHECK(has<std::string>(npv, "name", test_point_name));
         CHECK(has<picojson::object>(npv, "point"));
 
-        SECTION("deserialization") {
-            Point np = { 0, 0, 0 };
-            picojson::convert::from_value(pv, np);
-            CHECK(np.x == 1);
-            CHECK(np.y == 2);
-            CHECK(np.z == 3);
+        SECTION("deserialization from value") {
+            Point np_ = { 0, 0, 0 };
+            picojson::convert::from_value(pv, np_);
+            CHECK(np_.x == 1);
+            CHECK(np_.y == 2);
+            CHECK(np_.z == 3);
             
-            np.x = np.y = np.z = 0;
-            NamedPoint nnp = { "", np };
+            NamedPoint nnp = { "", { 0, 0, 0 } };
             picojson::convert::from_value(npv, nnp);
             CHECK(nnp.name == test_point_name);
             CHECK(nnp.point.x == 1);
             CHECK(nnp.point.y == 2);
             CHECK(nnp.point.z == 3);
 
-            //std::string pvs = picojson::convert::to_string(p);
-            //picojson::convert::from_string<Point>(pvs, np);
+            SECTION("deserialization from string") {
+                std::string ps = picojson::convert::to_string(p);
+                Point pss = { 0, 0, 0 };
+                picojson::convert::from_string(ps, pss);
+                CHECK(pss.x == 1);
+                CHECK(pss.y == 2);
+                CHECK(pss.z == 3);
+
+                std::string nps = picojson::convert::to_string(np);
+                NamedPoint npss = { "", { 0, 0, 0 } };
+                picojson::convert::from_string(nps, npss);
+                CHECK(npss.name == test_point_name);
+                CHECK(npss.point.x == 1);
+                CHECK(npss.point.y == 2);
+                CHECK(npss.point.z == 3);
+            }
         }
     }
 }
