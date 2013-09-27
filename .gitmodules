@@ -1,0 +1,6 @@
+[submodule "picojson"]
+	path = picojson
+	url = https://github.com/kazuho/picojson.git
+[submodule "Catch"]
+	path = Catch
+	url = https://github.com/philsquared/Catch.git
