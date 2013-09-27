@@ -59,7 +59,7 @@ picojson::value npv = picojson::convert::to_value(np);
 std::string nps = picojson::convert::to_string(np);
 ````
 
-serializing as
+resulting in
 ````js
 {"name":"test point","point":{"x":1,"y":2,"z":3}}
 ````
@@ -73,7 +73,7 @@ std::string json=...
 picojson::convert::from_string(json,np);
 ````
 
-Currently, if deserialization fails for one or more members, those are not modified.  
+Currently, if deserialization fails for a member, that member is not modified.  
 
 status
 ------

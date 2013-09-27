@@ -12,7 +12,6 @@
 
 #include "picojson.h"
 #include <string>
-#include <type_traits>
 
 namespace picojson {
     namespace convert {
