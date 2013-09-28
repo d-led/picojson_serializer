@@ -84,19 +84,19 @@ namespace picojson {
             }
         };
 
+        template <typename V>
+        struct standard_value;
+        template<> struct standard_value<int> { static void get(value const& v_, int& v){ from_value(v_, v); } };
+        template<> struct standard_value<double> { static void get(value const& v_, double& v){ from_value(v_, v); } };
+        template<> struct standard_value<bool> { static void get(value const& v_, bool& v){ from_value(v_, v); } };
+        template<> struct standard_value<std::string> { static void get(value const& v_, std::string& v){ from_value(v_, v); } };
+        template <typename V>
+        struct standard_value { static void get(value const& v_, V& v){} };
+
         template <typename T>
         class write_access {
             T& t;
             value const& v;
-
-            template <typename V>
-            struct standard_value;
-            template<> struct standard_value<int> { static void get(value const& v_, int& v){ from_value(v_, v); } };
-            template<> struct standard_value<double> { static void get(value const& v_, double& v){ from_value(v_, v); } };
-            template<> struct standard_value<bool> { static void get(value const& v_, bool& v){ from_value(v_, v); } };
-            template<> struct standard_value<std::string> { static void get(value const& v_, std::string& v){ from_value(v_, v); } };
-            template <typename V>
-            struct standard_value { static void get(value const& v_, V& v){} };
 
         public:
             write_access(value const& v_,T& t_) :t(t_),v(v_){}
