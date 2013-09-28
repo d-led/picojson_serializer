@@ -1,10 +1,5 @@
 language: cpp
 
-before_install:
-  - sudo apt-get install libc6-dev-i386
-
 script:
-  - make -C Build config=release32
-  - make -C Build config=release32 clean
-  - make -C Build config=release64
+  - make -C Build config=release
   - make #clang
