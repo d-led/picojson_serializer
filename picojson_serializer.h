@@ -101,8 +101,8 @@ namespace picojson {
         public:
             write_access(value const& v_,T& t_) :t(t_),v(v_){}
 
-            template<typename T>
-            void operator & (key_value<T>& kv) {
+            template<typename TT>
+            void operator & (key_value<TT>& kv) {
                 if ( !v.is<picojson::object>() )
                     return;
 
@@ -121,7 +121,7 @@ namespace picojson {
 					from_value(found->second,kv.value);
 				}
 
-                standard_value<T>::get(found->second, kv.value);
+                standard_value<TT>::get(found->second, kv.value);
             }
         };
 
