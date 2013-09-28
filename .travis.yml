@@ -1,6 +1,7 @@
 language: cpp
 
 script:
+  - sudo apt-get install libc6-dev-i386
   - make -C Build config=release32
   - make -C Build config=release32 clean
   - make -C Build config=release64
