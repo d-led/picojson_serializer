@@ -46,3 +46,15 @@ bool is(picojson::array const& a, size_t pos, T const& t)
 
     return false;
 }
+
+template <typename T>
+bool is(picojson::array const& a, size_t pos)
+{
+    if ( pos >= a.size() )
+        return false;
+
+    if ( a[pos].is<T>() )
+        return true;
+
+    return false;
+}

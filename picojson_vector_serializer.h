@@ -6,9 +6,9 @@ namespace picojson {
     namespace convert{
 
         template<typename T,typename Allocator> struct value_converter< std::vector<T,Allocator> > {
-            static value to_value(std::vector<T, Allocator> const& v) {
+            static value to_value(std::vector<T, Allocator>& v) {
                 picojson::array a;
-                for ( std::vector<T, Allocator>::const_iterator it = v.begin();
+                for ( std::vector<T, Allocator>::iterator it = v.begin();
                     it != v.end();
                     ++it ) {
                         a.push_back(value_converter<T>::to_value(*it));
