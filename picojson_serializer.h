@@ -149,7 +149,8 @@ namespace picojson {
         template < typename T>
         void from_string(std::string const& json,T& t) {
             picojson::value v;
-            picojson::parse(v, json.begin(), json.end());
+			std::string err;
+            picojson::parse(v, json.begin(), json.end(),&err);
             from_value(v, t);
         }
     }
