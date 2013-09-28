@@ -29,6 +29,21 @@ namespace {
     };
 }
 
+void CHECK_A(picojson::value& av) {
+    REQUIRE(has<picojson::array>(av, "ints"));
+    picojson::array const& arr = av.get<picojson::object>()["ints"].get<picojson::array>();
+    REQUIRE(arr.size() == 2);
+    CHECK(is<double>(arr, 0, 1));
+    CHECK(is<double>(arr, 1, 2));
+    REQUIRE(has<picojson::array>(av, "xx"));
+    picojson::array& xarr = av.get<picojson::object>()["xx"].get<picojson::array>();
+    REQUIRE(xarr.size() == 1);
+    CHECK(is<picojson::object>(xarr, 0));
+    picojson::object& xxx = xarr[0].get<picojson::object>();
+    REQUIRE(xxx["x"].is<double>());
+    CHECK(static_cast<int>(xxx["x"].get<double>()) == 42);
+}
+
 TEST_CASE() {
     SECTION("serialization") {
         A a;
@@ -38,22 +53,13 @@ TEST_CASE() {
         a.xx.push_back(x);
         picojson::value av = picojson::convert::to_value(a);
         std::string as = picojson::convert::to_string(a);
-
-        REQUIRE(has<picojson::array>(av, "ints"));
-        picojson::array const& arr = av.get<picojson::object>()["ints"].get<picojson::array>();
-        CHECK(arr.size() == 2);
-        CHECK(is<double>(arr, 0, 1));
-        CHECK(is<double>(arr, 1, 2));
-        REQUIRE(has<picojson::array>(av, "xx"));
-        picojson::array& xarr = av.get<picojson::object>()["xx"].get<picojson::array>();
-        CHECK(xarr.size() == 1);
-        CHECK(is<picojson::object>(xarr, 0));
-        picojson::object& xxx = xarr[0].get<picojson::object>();
-        REQUIRE(xxx["x"].is<double>());
-        CHECK(static_cast<int>(xxx["x"].get<double>()) == 42);
+        CHECK_A(av);
         SECTION("deserialization from value") {
+            A na;
+            picojson::convert::from_value(av,na);
+            picojson::value nav = picojson::convert::to_value(na);
+            //CHECK_A(nav);
 
-            
             SECTION("deserialization from string") {
 
             }
