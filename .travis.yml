@@ -1,5 +1,7 @@
 language: cpp
 
 script:
-  - make -C Build
-  - make
+  - make -C Build config=release32
+  - make -C Build config=release32 clean
+  - make -C Build config=release64
+  - make #clang
