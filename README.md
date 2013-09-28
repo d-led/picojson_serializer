@@ -11,7 +11,7 @@ building
 
 Make sure `picojson.h` can be found, include `picojson_serialization.h`, no extra build steps necessary.
 
-A Visual Studio solution can be found in the project root with the test. 
+A [Premake4](http://industriousone.com/premake) is included and the generated files are to be found in the Build folder.  
 
 declaring objects as serializable
 ---------------------------------
