@@ -117,6 +117,10 @@ namespace picojson {
                     return;
                 }
 
+				if ( found->second.is<picojson::array>() ) {
+					from_value(found->second,kv.value);
+				}
+
                 standard_value<T>::get(found->second, kv.value);
             }
         };

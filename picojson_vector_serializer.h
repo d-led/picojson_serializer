@@ -17,7 +17,16 @@ namespace picojson {
             }
 
             static void from_value(value const& ov, std::vector<T, Allocator>& v) {
-                //if ( ov.is<std::string>() ) v = ov.get<std::string>();
+                if ( !ov.is<picojson::array>() )
+                    return;
+                picojson::array const& a = ov.get<picojson::array>();
+                for ( picojson::array::const_iterator it = a.begin();
+                    it != a.end();
+                    ++it ) {
+                        T t;
+                        value_converter<T>::from_value(*it, t);
+                        v.push_back(t);
+                }
             }
         };
     }
