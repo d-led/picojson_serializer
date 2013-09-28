@@ -59,20 +59,12 @@ namespace picojson {
         };
 
         class access {
-            bool do_serialize;
             object o;
 
         public:
-            access(bool w) :do_serialize(w){}
-
             template<typename T>
-            void operator & (key_value<T>& kv) {
-                if ( do_serialize ) {
-                    o[kv.key] = to_value(kv.value);
-                }
-                else {
-                    from_value(o[kv.key], kv.value);
-                }
+            void operator & (key_value<T> kv) {
+                o[kv.key] = to_value(kv.value); 
             }
 
             std::string serialize() const {
@@ -102,7 +94,7 @@ namespace picojson {
             write_access(value const& v_,T& t_) :t(t_),v(v_){}
 
             template<typename TT>
-            void operator & (key_value<TT>& kv) {
+            void operator & (key_value<TT> kv) {
                 if ( !v.is<picojson::object>() )
                     return;
 
@@ -128,7 +120,7 @@ namespace picojson {
         template <typename T>
         struct value_converter {
             static value to_value(T& v) {
-                access a(true);
+                access a;
                 v.json(a);
                 return a.get_value();
             }
@@ -141,7 +133,7 @@ namespace picojson {
 
         template < typename T>
         std::string to_string(T& t) {
-            access a(true);
+            access a;
             t.json(a);
             return a.serialize();
         }

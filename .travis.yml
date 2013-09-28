@@ -2,3 +2,4 @@ language: cpp
 
 script:
   - make -C Build
+  - make
