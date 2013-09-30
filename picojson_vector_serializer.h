@@ -11,33 +11,47 @@
 #pragma once
 #include "picojson_serializer.h"
 #include <vector>
+#include <algorithm>
 
 namespace picojson {
     namespace convert{
 
+		namespace operators {
+			
+			template<typename T>
+			value to_value(T& t) {
+				return value_converter<T>::to_value(t);
+			}
+
+			template<typename T>
+			T from_value(picojson::value const& v) {
+				T t;
+				value_converter<T>::from_value(v, t);
+				return t;
+			}
+
+		}
+
         template<typename T,typename Allocator> struct value_converter< std::vector<T,Allocator> > {
             static value to_value(typename std::vector<T, Allocator>& v) {
-                picojson::array a;
-                for ( typename std::vector<T, Allocator>::iterator it = v.begin();
-                    it != v.end();
-                    ++it ) {
-                        // todo: algorithm
-                        a.push_back(value_converter<T>::to_value(*it));
-                }
+				picojson::array a;
+				std::transform(
+					v.begin(),
+					v.end(),
+					std::back_inserter(a),
+					operators::to_value<T>);
                 return value(a);
             }
 
             static void from_value(value const& ov, typename std::vector<T, Allocator>& v) {
                 if ( !ov.is<picojson::array>() )
                     return;
-                picojson::array const& a = ov.get<picojson::array>();
-                for ( typename picojson::array::const_iterator it = a.begin();
-                    it != a.end();
-                    ++it ) {
-                        T t;
-                        value_converter<T>::from_value(*it, t);
-                        v.push_back(t);
-                }
+				picojson::array const& a = ov.get<picojson::array>();
+				std::transform(
+					a.begin(),
+					a.end(),
+					std::back_inserter(v),
+					operators::from_value<T>);
             }
         };
     }
