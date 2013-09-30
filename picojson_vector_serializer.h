@@ -21,6 +21,7 @@ namespace picojson {
                 for ( typename std::vector<T, Allocator>::iterator it = v.begin();
                     it != v.end();
                     ++it ) {
+                        // todo: algorithm
                         a.push_back(value_converter<T>::to_value(*it));
                 }
                 return value(a);
