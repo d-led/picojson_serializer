@@ -174,6 +174,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/vector_test.o \
 	$(OBJDIR)/test.o \
+	$(OBJDIR)/projections_test.o \
 
 RESOURCES := \
 
@@ -242,6 +243,9 @@ $(OBJDIR)/vector_test.o: ../test/vector_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/test.o: ../test/test.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/projections_test.o: ../test/projections_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
