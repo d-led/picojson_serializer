@@ -39,20 +39,23 @@ namespace {
 		};
 	}
 
+	template <typename C>
+	void CHECK_123(C const& c) {
+		CHECK( c.a == 1 );
+		CHECK( c.b == 2 );
+		CHECK( c.c == "3" );
+	}
+
 	SCENARIO("simplest case: 1-to-1 mapping") {
 		GIVEN("an serializable object with some predefined members") {
 			Class1 c1={1,2,"3"};
-			CHECK( c1.a == 1 );
-			CHECK( c1.b == 2 );
-			CHECK( c1.c == "3" );
+			CHECK_123(c1);
 
 			WHEN("I map that object onto an unrelated serializable object") {
 				Class2 c2=picojson::project::from(c1).onto<Class2>();
 
 				THEN("The members will be mapped as if the types were the same") {
-					CHECK( c2.a == 1 );
-					CHECK( c2.b == 2 );
-					CHECK( c2.c == "3" );
+					CHECK_123(c1);
 				}
 			}
 
