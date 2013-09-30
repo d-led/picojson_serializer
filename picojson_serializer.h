@@ -76,7 +76,6 @@ namespace picojson {
             }
         };
 
-	// todo: value_converter refactor
         template <typename V>
         struct standard_value;
         template<> struct standard_value<int> { static void get(value const& v_, int& v){ from_value(v_, v); } };
