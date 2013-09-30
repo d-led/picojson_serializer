@@ -76,6 +76,7 @@ namespace picojson {
             }
         };
 
+	// todo: value_converter refactor
         template <typename V>
         struct standard_value;
         template<> struct standard_value<int> { static void get(value const& v_, int& v){ from_value(v_, v); } };
@@ -109,9 +110,9 @@ namespace picojson {
                     return;
                 }
 
-				if ( found->second.is<picojson::array>() ) {
-					from_value(found->second,kv.value);
-				}
+		if ( found->second.is<picojson::array>() ) {
+			from_value(found->second,kv.value);
+		}
 
                 standard_value<TT>::get(found->second, kv.value);
             }
