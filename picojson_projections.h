@@ -29,9 +29,14 @@ namespace picojson {
 			template <typename TOut>
 			TOut onto() {
 				TOut result;
+				onto(result);
+				return result;
+			}
+
+			template <typename TOut>
+			void onto(TOut& result) {
 				value original_serialized=::picojson::convert::to_value(original);
 				::picojson::convert::from_value(original_serialized,result);
-				return result;
 			}
 		};
 

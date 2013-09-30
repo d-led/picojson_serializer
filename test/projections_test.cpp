@@ -53,9 +53,14 @@ namespace {
 
 			WHEN("I map that object onto an unrelated serializable object") {
 				Class2 c2=picojson::project::from(c1).onto<Class2>();
+				Class2 c2_={};
+				picojson::project::from(c1).onto(c2_);
+
 
 				THEN("The members will be mapped as if the types were the same") {
-					CHECK_123(c1);
+					CHECK_123(c2);
+					CHECK_123(c2);
+					CHECK_123(c2_);
 				}
 			}
 
