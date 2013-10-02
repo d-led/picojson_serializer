@@ -37,6 +37,24 @@ namespace {
 				ar & picojson::convert::member("a", a);
 			}
 		};
+        
+    struct Class3 {
+			std::string d;
+            int c;
+			int b;
+			int bla;
+			unsigned char spoiler__;
+            
+			friend class picojson::convert::access;
+			template<class Archive>
+			void json(Archive & ar)
+			{
+				ar & picojson::convert::member("d", d);
+				ar & picojson::convert::member("c", c);
+				ar & picojson::convert::member("b", b);
+				ar & picojson::convert::member("bla", bla);
+			}
+		};
 	}
 
 	template <typename C>
@@ -66,4 +84,14 @@ namespace {
 
 		}
 	}
+    
+    SCENARIO("renaming fields") {
+        Class1 c1={};
+        Class3 c3={};
+        c1.a=42;
+        picojson::project::from(c1)
+        	.remap_key("a","bla")
+        	.onto(c3);
+        CHECK( c3.bla == 42 );
+    }
 }

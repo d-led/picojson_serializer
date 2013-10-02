@@ -13,14 +13,18 @@
 #include "picojson_serializer.h"
 
 #include <string>
+#include <map>
 
 namespace picojson {
 
     namespace project {
 
+    	typedef std::map< std::string, std::string > key_map;
+
 		template <typename TIn>
 		class projector {
 			TIn& original;
+			key_map key_remap;
 
 		public:
 			projector(TIn& o):original(o){}
@@ -35,9 +39,33 @@ namespace picojson {
 
 			template <typename TOut>
 			void onto(TOut& result) {
-				value original_serialized=::picojson::convert::to_value(original);
+				value original_serialized = ::picojson::convert::to_value(original);
+				remap_keys_in(original_serialized);
 				::picojson::convert::from_value(original_serialized,result);
 			}
+
+			projector& remap_key(std::string const& from_key, std::string const& to_key) {
+				if ( from_key.length() == 0 ||
+					 to_key.length() == 0 )
+					return *this;
+
+				key_remap[from_key] = to_key;
+
+				return *this;
+			}
+
+		private:
+			void remap_keys_in(value& v) {
+				if ( !v.is<picojson::object>() )
+					return;
+				picojson::object& o = v.get<picojson::object>();
+				// an untidy version
+				for (key_map::const_iterator it = key_remap.begin(); it != key_remap.end(); ++it) {
+					o[it->second]=o[it->first];
+					o.erase(it->first);
+				}
+			}
+
 		};
 
 		template <typename TIn>
