@@ -75,7 +75,17 @@ std::string json=...
 picojson::convert::from_string(json,np);
 ````
 
-Currently, if deserialization fails for a member, that member is not modified.  
+Currently, if deserialization fails for a member, that member is not modified.
+
+mapping between unrelated types
+-------------------------------
+
+If you have serializable types that may be unrelated, such as a logic component and a data transfer object, you can 'project' the data from one object to another simply by mapping the values through the serialization like so:
+
+````cpp
+Class1 c1=...;
+Class2 c2=picojson::project::from(c1).onto<Class2>();
+````
 
 status
 ------
