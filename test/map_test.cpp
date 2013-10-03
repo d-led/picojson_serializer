@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 #include <map>
-#include <algorithm>
 
 #include "test_helpers.h"
 
@@ -29,4 +28,15 @@ TEST_CASE() {
         picojson::convert::from_value<X>(xv,y);
         CHECK( x.x == y.x );
     }
+}
+
+TEST_CASE("map as root object") {
+    std::map<int,int> m;
+    m[1]=2;
+    m[3]=4;
+    picojson::value mv=picojson::convert::to_value(m);
+    std::map<int,int> m_;
+    picojson::convert::from_value(mv,m_);
+    CHECK( m_[1] == 2 );
+    CHECK( m_[3] == 4 );
 }

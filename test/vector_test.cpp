@@ -68,3 +68,16 @@ TEST_CASE() {
         }
     }
 }
+
+TEST_CASE("vector as root object") {
+    std::vector<X> v;
+    X x = {1};
+    v.push_back(x);
+    x.x = 2;
+    v.push_back(x);
+    picojson::value vv=picojson::convert::to_value(v);
+    std::vector<X> v_;
+    picojson::convert::from_value(vv,v_);
+    CHECK( v.size() == v_.size() );
+    CHECK( v[1].x == v_[1].x );
+}
