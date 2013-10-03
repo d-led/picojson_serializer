@@ -291,12 +291,15 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\picojson_map_serializer.h" />
     <ClInclude Include="..\picojson_projections.h" />
     <ClInclude Include="..\picojson_serializer.h" />
     <ClInclude Include="..\picojson_vector_serializer.h" />
     <ClInclude Include="..\test\test_helpers.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\test\map_test.cpp">
+    </ClCompile>
     <ClCompile Include="..\test\projections_test.cpp">
     </ClCompile>
     <ClCompile Include="..\test\test.cpp">
