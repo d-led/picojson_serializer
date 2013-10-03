@@ -2,6 +2,7 @@
 
 #include <catch.hpp>
 #include <map>
+#include <algorithm>
 
 #include "test_helpers.h"
 
@@ -23,6 +24,9 @@ TEST_CASE() {
         x.x[1]="42";
         x.x[3]="33";
         std::string xs=picojson::convert::to_string(x);
-        std::cout<<xs<<std::endl;
+        picojson::value xv=picojson::convert::to_value(x);
+        X y={};
+        picojson::convert::from_value<X>(xv,y);
+        CHECK( x.x == y.x );
     }
 }

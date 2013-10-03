@@ -32,8 +32,9 @@ namespace picojson {
 
 		}
 
-        template<typename Type, typename Key, class Compare, class Allocator> struct value_converter< std::map<Key, Type, Compare, Allocator> > {
-            typedef typename std::map<Key, Type, Compare, Allocator> map_type;
+        template<typename ValueType, typename Key, class Compare, class Allocator> struct value_converter< std::map<Key, ValueType, Compare, Allocator> > {
+            typedef typename std::map<Key, ValueType, Compare, Allocator> map_type;
+            
             static value to_value(map_type& v) {
                 picojson::array a;
                 for (typename map_type::iterator it=v.begin();
@@ -47,17 +48,30 @@ namespace picojson {
                 return value(a);
             }
 
-            /*
-            static void from_value(value const& ov, typename std::map<T, Allocator>& v) {
+            static void from_value(value const& ov, map_type& m) {
                 if ( !ov.is<picojson::array>() )
                     return;
-				picojson::array const& a = ov.get<picojson::array>();
-				std::transform(
-					a.begin(),
-					a.end(),
-					std::back_inserter(v),
-					operators::from_value<T>);
-            }*/
+                picojson::array const& a=ov.get<picojson::array>();
+                for (picojson::array::const_iterator it=a.begin();
+                     it!=a.end();
+                     ++it) {
+                        if ( !it->is<picojson::object>() )
+                            continue;
+                        picojson::object const& o=it->get<picojson::object>();
+                        
+                        picojson::object::const_iterator key=o.find("Key");
+                        if ( key == o.end() )
+                            continue;
+
+                        picojson::object::const_iterator value=o.find("Value");
+                        if ( value == o.end() )
+                            continue;
+
+                    	Key key_(operators::from_value<Key>(key->second));
+                    	ValueType value_(operators::from_value<ValueType>(value->second));
+                    	m[key_]=value_;
+                }
+            }
         };
     }
 }
