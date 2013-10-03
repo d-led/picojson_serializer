@@ -86,12 +86,25 @@ namespace {
 	}
     
     SCENARIO("renaming fields") {
-        Class1 c1={};
-        Class3 c3={};
-        c1.a=42;
-        picojson::project::from(c1)
-        	.remap_key("a","bla")
-        	.onto(c3);
-        CHECK( c3.bla == 42 );
+    	GIVEN("a couple of objects with incompatible member names") {
+	        Class1 c1={};
+	        Class3 c3={};
+	        c1.a=42;
+	        c1.b=33;
+
+	        WHEN("I map some member names onto others") {
+		        picojson::project::from(c1)
+		        	.remap_key("a","bla")
+		        	.onto(c3);
+
+		        THEN("the values are mapped correctly") {
+	        		CHECK( c3.bla == 42 );
+
+	        		AND_THEN("any the values can be shadowed") {
+	        			INFO("todo");
+	        		}
+	        	}
+	        }
+		}
     }
 }

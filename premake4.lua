@@ -31,7 +31,7 @@ end
 
 function CompilerSpecificConfiguration()
 	configuration {"xcode*" }
-		postbuildcommands {"$TARGET_BUILD_DIR/$TARGET_NAME"}
+		--postbuildcommands {"$TARGET_BUILD_DIR/$TARGET_NAME"}
 
 	configuration {"gmake"}
 		postbuildcommands  { "$(TARGET)" }
