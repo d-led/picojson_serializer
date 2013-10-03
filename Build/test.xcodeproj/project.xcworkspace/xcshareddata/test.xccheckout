@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>31268EBA-23B5-4305-AAA4-49CBF88CD169</string>
+	<key>IDESourceControlProjectName</key>
+	<string>test</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9BDBBC1B-925A-4BB1-A3C8-5B0D04A9CDDA</key>
+		<string>https://github.com/d-led/picojson_serializer.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Build/test.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9BDBBC1B-925A-4BB1-A3C8-5B0D04A9CDDA</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/d-led/picojson_serializer.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9BDBBC1B-925A-4BB1-A3C8-5B0D04A9CDDA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9BDBBC1B-925A-4BB1-A3C8-5B0D04A9CDDA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>picojson_serializer</string>
+		</dict>
+	</array>
+</dict>
+</plist>
