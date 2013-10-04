@@ -155,6 +155,14 @@ namespace picojson {
 				return t;
 			}
 
+			template <typename KeyType,typename ValueType>
+			value to_value(std::pair< KeyType, ValueType >const& p) {
+				picojson::object o;
+				o["Key"]=value_converter<KeyType>::to_value(const_cast<KeyType&>(p.first));
+				o["Value"]=value_converter<ValueType>::to_value(p.second);
+				return value(o);
+			}
+
 		}
     }
 }
