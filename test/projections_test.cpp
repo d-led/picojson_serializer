@@ -87,21 +87,24 @@ namespace {
     
     SCENARIO("renaming fields") {
     	GIVEN("a couple of objects with incompatible member names") {
-	        Class1 c1={};
 	        Class3 c3={};
-	        c1.a=42;
-	        c1.b=33;
+	        Class1 c1={};
+	        c3.c=42;
+	        c3.b=33;
+	        c3.bla=77;
 
 	        WHEN("I map some member names onto others") {
-		        picojson::project::from(c1)
-		        	.remap_key("a","bla")
-		        	.onto(c3);
+		        picojson::project::from(c3)
+		        	.remap_key("c","b") // shadows c3.b=77
+		        	.remap_key("bla","b")
+		        	.remap_key("b","a")
+		        	.onto(c1);
 
 		        THEN("the values are mapped correctly") {
-	        		CHECK( c3.bla == 42 );
+	        		CHECK( c1.a == 33 );
 
-	        		AND_THEN("any the values can be shadowed") {
-	        			INFO("todo");
+	        		AND_THEN("any the first value in definition is mapped") {
+	        			CHECK( c1.b == 42.0 );
 	        		}
 	        	}
 	        }
