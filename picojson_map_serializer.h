@@ -16,22 +16,6 @@
 namespace picojson {
     namespace convert{
 
-		namespace operators {
-			
-			template<typename T>
-			value to_value(T& t) {
-				return value_converter<T>::to_value(t);
-			}
-
-			template<typename T>
-			T from_value(picojson::value const& v) {
-				T t;
-				value_converter<T>::from_value(v, t);
-				return t;
-			}
-
-		}
-
         template<typename ValueType, typename Key, class Compare, class Allocator> struct value_converter< std::map<Key, ValueType, Compare, Allocator> > {
             typedef typename std::map<Key, ValueType, Compare, Allocator> map_type;
             

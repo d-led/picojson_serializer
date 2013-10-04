@@ -16,22 +16,6 @@
 namespace picojson {
     namespace convert{
 
-		namespace operators {
-			
-			template<typename T>
-			value to_value(T& t) {
-				return value_converter<T>::to_value(t);
-			}
-
-			template<typename T>
-			T from_value(picojson::value const& v) {
-				T t;
-				value_converter<T>::from_value(v, t);
-				return t;
-			}
-
-		}
-
         template<typename T,typename Allocator> struct value_converter< std::vector<T,Allocator> > {
             static value to_value(typename std::vector<T, Allocator>& v) {
 				picojson::array a;
