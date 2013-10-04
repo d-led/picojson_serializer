@@ -90,7 +90,13 @@ Class2 c2=picojson::project::from(c1).onto<Class2>();
 status
 ------
 
-Lots of to-dos.
+### List of supported standard library containers ###
+
+- vector
+- map
+- multimap
+
++Lots of to-dos.
 
 license
 =======
