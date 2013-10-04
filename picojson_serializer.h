@@ -149,11 +149,6 @@ namespace picojson {
 		namespace operators {
 
 			template<typename T>
-			value to_value(T& t) {
-				return value_converter<T>::to_value(t);
-			}
-
-			template<typename T>
 			T from_value(picojson::value const& v) {
 				T t;
 				value_converter<T>::from_value(v, t);

@@ -23,7 +23,7 @@ namespace picojson {
 					v.begin(),
 					v.end(),
 					std::back_inserter(a),
-					operators::to_value<T>);
+					value_converter<T>::to_value);
                 return value(a);
             }
 

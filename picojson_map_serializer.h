@@ -25,8 +25,8 @@ namespace picojson {
                      it!=v.end();
                      ++it) {
                             picojson::object o;
-                            o["Key"]=operators::to_value(const_cast<Key&>(it->first));
-                            o["Value"]=operators::to_value(it->second);
+                            o["Key"]=value_converter<Key>::to_value(const_cast<Key&>(it->first));
+                            o["Value"]=value_converter<ValueType>::to_value(it->second);
                             a.push_back(picojson::value(o));
                 }
                 return value(a);
@@ -68,8 +68,8 @@ namespace picojson {
                      it!=v.end();
                      ++it) {
                             picojson::object o;
-                            o["Key"]=operators::to_value(const_cast<Key&>(it->first));
-                            o["Value"]=operators::to_value(it->second);
+                            o["Key"]=value_converter<Key>::to_value(const_cast<Key&>(it->first));
+                            o["Value"]=value_converter<ValueType>::to_value(it->second);
                             a.push_back(picojson::value(o));
                 }
                 return value(a);
