@@ -73,6 +73,49 @@ namespace picojson {
                 }
             }
         };
+
+
+        template<typename ValueType, typename Key, class Compare, class Allocator> struct value_converter< std::multimap<Key, ValueType, Compare, Allocator> > {
+            typedef typename std::multimap<Key, ValueType, Compare, Allocator> map_type;
+            
+            static value to_value(map_type& v) {
+                picojson::array a;
+                for (typename map_type::iterator it=v.begin();
+                     it!=v.end();
+                     ++it) {
+                            picojson::object o;
+                            o["Key"]=operators::to_value(const_cast<Key&>(it->first));
+                            o["Value"]=operators::to_value(it->second);
+                            a.push_back(picojson::value(o));
+                }
+                return value(a);
+            }
+
+            static void from_value(value const& ov, map_type& m) {
+                if ( !ov.is<picojson::array>() )
+                    return;
+                picojson::array const& a=ov.get<picojson::array>();
+                for (picojson::array::const_iterator it=a.begin();
+                     it!=a.end();
+                     ++it) {
+                        if ( !it->is<picojson::object>() )
+                            continue;
+                        picojson::object const& o=it->get<picojson::object>();
+                        
+                        picojson::object::const_iterator key=o.find("Key");
+                        if ( key == o.end() )
+                            continue;
+
+                        picojson::object::const_iterator value=o.find("Value");
+                        if ( value == o.end() )
+                            continue;
+
+                    	Key key_(operators::from_value<Key>(key->second));
+                    	ValueType value_(operators::from_value<ValueType>(value->second));
+                    	m.insert(std::make_pair(key_,value_));
+                }
+            }
+        };        
     }
 }
 
