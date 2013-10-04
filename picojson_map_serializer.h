@@ -62,14 +62,12 @@ namespace picojson {
             
             static value to_value(map_type& v) {
                 picojson::array a;
-                for (typename map_type::iterator it=v.begin();
-                     it!=v.end();
-                     ++it) {
-                            picojson::object o;
-                            o["Key"]=value_converter<Key>::to_value(const_cast<Key&>(it->first));
-                            o["Value"]=value_converter<ValueType>::to_value(it->second);
-                            a.push_back(picojson::value(o));
-                }
+				std::transform(
+					v.begin(),
+					v.end(),
+					std::back_inserter(a),
+					operators::to_value<Key,ValueType>
+				);
                 return value(a);
             }
 
