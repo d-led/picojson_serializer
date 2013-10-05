@@ -133,9 +133,7 @@ namespace picojson {
 
         template < typename T>
         std::string to_string(T& t) {
-            access a;
-            t.json(a);
-            return a.serialize();
+            return to_value(t).serialize();
         }
 
         template < typename T>

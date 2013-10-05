@@ -60,6 +60,7 @@ TEST_CASE("multimap as root object") {
     m.insert(std::make_pair(1,22));
     m.insert(std::make_pair(3,4));
     picojson::value mv=picojson::convert::to_value(m);
+	std::string ms=picojson::convert::to_string(m);
     std::multimap<int,int> m_;
     picojson::convert::from_value(mv,m_);
     CHECK( m_ == m );
