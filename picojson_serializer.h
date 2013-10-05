@@ -76,46 +76,38 @@ namespace picojson {
             }
         };
 
-        template <typename V>
-        struct standard_value;
-        template<> struct standard_value<int> { static void get(value const& v_, int& v){ from_value(v_, v); } };
-        template<> struct standard_value<double> { static void get(value const& v_, double& v){ from_value(v_, v); } };
-        template<> struct standard_value<bool> { static void get(value const& v_, bool& v){ from_value(v_, v); } };
-        template<> struct standard_value<std::string> { static void get(value const& v_, std::string& v){ from_value(v_, v); } };
-        template <typename V>
-        struct standard_value { static void get(value const& v_, V& v){} };
-
         template <typename T>
-        class write_access {
-            T& t;
-            value const& v;
+		class write_access {
+			T& t;
+			value const& v;
 
-        public:
-            write_access(value const& v_,T& t_) :t(t_),v(v_){}
+		public:
+			write_access(value const& v_,T& t_) :t(t_),v(v_){}
 
-            template<typename TT>
-            void operator & (key_value<TT> kv) {
-                if ( !v.is<picojson::object>() )
-                    return;
+			template<typename TT>
+			void operator & (key_value<TT> kv) {
+				if ( !v.is<picojson::object>() )
+					return;
 
-                picojson::object const& o = v.get<picojson::object>();
-                picojson::object::const_iterator found =
-                    o.find(kv.key);
-                if ( found == o.end() )
-                    return;
+				picojson::object const& o = v.get<picojson::object>();
+				picojson::object::const_iterator found =
+					o.find(kv.key);
+				if ( found == o.end() )
+					return;
 
-                if ( found->second.is<picojson::object>() ) {
-                    from_value(found->second, kv.value);
-                    return;
-                }
+				if ( found->second.is<picojson::object>() ) {
+					from_value(found->second, kv.value);
+					return;
+				}
 
-		if ( found->second.is<picojson::array>() ) {
-			from_value(found->second,kv.value);
-		}
+				if ( found->second.is<picojson::array>() ) {
+					from_value(found->second,kv.value);
+					return;
+				}
 
-                standard_value<TT>::get(found->second, kv.value);
-            }
-        };
+				value_converter<TT>::from_value(found->second, kv.value);
+			}
+		};
 
         template <typename T>
         struct value_converter {
