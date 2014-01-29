@@ -35,9 +35,8 @@ namespace picojson {
 }
 
 TEST_CASE("custom serializer example") {
-	Example e;
+	Example e = { Example::NONE };
 
-	e.status=Example::NONE;
 	picojson::value ev = picojson::convert::to_value(e);
 	CHECK(has<double>(ev, "status", 0));
 

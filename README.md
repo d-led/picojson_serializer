@@ -77,6 +77,76 @@ picojson::convert::from_string(json,np);
 
 Currently, if deserialization fails for a member, that member is not modified.
 
+implementing custom value converters
+------------------------------------
+
+The serialization can be easily customized for types that are default-convertible. Example class:
+
+````cpp
+struct Example {
+	enum Status {
+		NONE = 0,
+		SOME,
+		SOME_OTHER
+	};
+
+	Status status;
+
+	friend class picojson::convert::access;
+	template<class Archive>
+	void json(Archive & ar)
+	{
+		ar & picojson::convert::member("status", status);
+	}
+};
+````
+
+Attempting to serialize instances of `Example` should lead to compile error:
+
+````cpp
+Example e = { Example::NONE };
+picojson::value ev = picojson::convert::to_value(e);
+````
+
+However, you can specialize the value converter for the enum, i.e.:
+
+````cpp
+namespace picojson {
+namespace convert {
+
+	template<> struct value_converter<Example::Status> {
+		static value to_value(Example::Status v) {
+			return value(static_cast<double>(v));
+		}
+
+		static void from_value(value const& ov, Example::Status& v) {
+			if ( ov.is<double>() ) v = Example::Status(static_cast<int>(ov.get<double>()));
+		}
+	};
+}
+}
+````
+
+and the test passes:
+
+````cpp
+Example e = { Example::SOME };
+picojson::value ev = picojson::convert::to_value(e);
+CHECK(has<double>(ev, "status", static_cast<int>(Example::SOME)));
+````
+
+
+container converters
+--------------------
+
+### List of supported standard library containers ###
+
+- vector
+- map
+- multimap
+
+
+
 mapping between unrelated types
 -------------------------------
 
@@ -89,12 +159,6 @@ Class2 c2=picojson::project::from(c1).onto<Class2>();
 
 status
 ------
-
-### List of supported standard library containers ###
-
-- vector
-- map
-- multimap
 
 +Lots of to-dos.
 
