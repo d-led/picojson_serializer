@@ -13,7 +13,7 @@ building
 
 Make sure `picojson.h` can be found, include `picojson_serialization.h`, no extra build steps necessary.
 
-A [Premake4](http://industriousone.com/premake) is included and the generated files are to be found in the Build folder.  
+[Premake4](http://industriousone.com/premake) is included and the generated build files are to be found in the Build folder.  
 
 declaring objects as serializable
 ---------------------------------
@@ -80,7 +80,7 @@ Currently, if deserialization fails for a member, that member is not modified.
 implementing custom value converters
 ------------------------------------
 
-The serialization can be easily customized for types that are default-convertible. Example class:
+The serialization can be easily customized for types that are not default-convertible. Example class:
 
 ````cpp
 struct Example {
