@@ -4,8 +4,8 @@
 #include "test_helpers.h"
 
 namespace {
-    struct Example {
-        enum Status {
+	struct Example {
+		enum Status {
 			NONE = 0,
 			SOME,
 			SOME_OTHER
@@ -13,13 +13,13 @@ namespace {
 
 		Status status;
 
-        friend class picojson::convert::access;
-        template<class Archive>
-        void json(Archive & ar)
-        {
-            ar & picojson::convert::member("status", status);
-        }
-    };
+		friend class picojson::convert::access;
+		template<class Archive>
+		void json(Archive & ar)
+		{
+			ar & picojson::convert::member("status", status);
+		}
+	};
 }
 
 namespace picojson {
@@ -38,14 +38,14 @@ TEST_CASE("custom serializer example") {
 	Example e;
 
 	e.status=Example::NONE;
-    picojson::value ev = picojson::convert::to_value(e);
+	picojson::value ev = picojson::convert::to_value(e);
 	CHECK(has<double>(ev, "status", 0));
 
 	e.status=Example::SOME;
-    ev = picojson::convert::to_value(e);
+	ev = picojson::convert::to_value(e);
 	CHECK(has<double>(ev, "status", static_cast<int>(Example::SOME)));
 
 	e.status=Example::SOME_OTHER;
-    ev = picojson::convert::to_value(e);
+	ev = picojson::convert::to_value(e);
 	CHECK(has<double>(ev, "status", static_cast<int>(Example::SOME_OTHER)));
 }
