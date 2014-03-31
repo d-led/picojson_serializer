@@ -302,6 +302,8 @@
     </ClCompile>
     <ClCompile Include="..\test\map_test.cpp">
     </ClCompile>
+    <ClCompile Include="..\test\nonintrusive_test.cpp">
+    </ClCompile>
     <ClCompile Include="..\test\projections_test.cpp">
     </ClCompile>
     <ClCompile Include="..\test\test.cpp">

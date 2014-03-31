@@ -77,6 +77,42 @@ picojson::convert::from_string(json,np);
 
 Currently, if deserialization fails for a member, that member is not modified.
 
+non-intrusive serialization
+---------------------------
+
+A class that cannot be extended, but the internals are accessible (following to the [Boost.Serialization](http://www.boost.org/doc/libs/1_55_0/libs/serialization/doc/serialization.html#free) api):
+
+````cpp
+struct Untouchable {
+    int value;
+};
+````
+
+With a free function defined in the `::picojson::convert` namespace,
+
+````cpp
+namespace picojson {
+    namespace convert {
+
+        template <class Archive>
+        void json(Archive &ar, Untouchable &u) {
+            ar &picojson::convert::member("value", u.value);
+        }
+
+    }
+}
+````
+serialization is again possible:
+
+````cpp
+Untouchable example = { 42 };
+std::string example_string( picojson::convert::to_string(example) );
+
+Untouchable example_deserialized = { 0 };
+picojson::convert::from_string( example_string, example_deserialized );
+CHECK( example.value == example_deserialized.value );
+````
+
 implementing custom value converters
 ------------------------------------
 
@@ -146,7 +182,6 @@ container converters
 - multimap
 
 
-
 mapping between unrelated types
 -------------------------------
 
@@ -156,20 +191,6 @@ If you have serializable types that may be unrelated, such as a logic component 
 Class1 c1=...;
 Class2 c2=picojson::project::from(c1).onto<Class2>();
 ````
-
-status
-------
-
-TODO:
-
-Non-intrusive serialization definition i.e.
-
-```cpp
-struct X{ ... };
-
-template<class Archive>
-void json(Archive & ar, X& x) { ... }
-```
 
 license
 =======

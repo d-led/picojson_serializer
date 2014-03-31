@@ -16,6 +16,33 @@
 namespace picojson {
     namespace convert {
 
+        /// http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Member_Detector
+        template<typename T>
+        class has_json_member
+        {
+            struct Fallback { int json; };
+            struct Derived : T, Fallback { };
+
+            template<typename U, U> struct Check;
+
+            typedef char ArrayOfOne[1];  // typedef for an array of size one.
+            typedef char ArrayOfTwo[2];  // typedef for an array of size two.
+
+            template<typename U> 
+            static ArrayOfOne & func(Check<int Fallback::*, &U::json> *);
+
+            template<typename U> 
+            static ArrayOfTwo & func(...);
+
+        public:
+            typedef has_json_member type;
+            enum { value = sizeof(func<Derived>(0)) == 2 };
+        };
+
+        // pre-c++11  enable_if (http://en.cppreference.com/w/cpp/types/enable_if)
+        template <bool B, class T = void> struct enable_if {};
+        template <class T> struct enable_if<true, T> { typedef T type; };
+
         template<typename T>
         struct key_value {
             std::string key;
@@ -28,7 +55,18 @@ namespace picojson {
             return res;
         }
 
-        template<typename T> struct value_converter;
+        template<typename T,class Enable = void> struct value_converter {
+            static value to_value(T& v) {
+                access a;
+                json(a,v);
+                return a.get_value();
+            }
+
+            static void from_value(value const& ov, T& v) {
+                write_access<T> a(ov,v);
+                json(a,v);
+            }
+        };
 
         /// standard types
         template<> struct value_converter<double> {
@@ -110,7 +148,7 @@ namespace picojson {
 		};
 
         template <typename T>
-        struct value_converter {
+        struct value_converter<T, typename enable_if< has_json_member<T>::value >::type> {
             static value to_value(T& v) {
                 access a;
                 v.json(a);
