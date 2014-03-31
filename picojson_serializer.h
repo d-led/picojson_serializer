@@ -55,6 +55,30 @@ namespace picojson {
             return res;
         }
 
+        class access {
+            object o;
+
+        public:
+            template<typename T>
+            void operator & (key_value<T> kv);
+
+            inline std::string serialize() const;
+
+            inline value get_value() const;
+        };
+
+        template <typename T>
+        class write_access {
+            T& t;
+            value const& v;
+
+        public:
+            write_access(value const& v_,T& t_);
+
+            template<typename TT>
+            void operator & (key_value<TT> kv);
+        };
+
         template<typename T,class Enable = void> struct value_converter {
             static value to_value(T& v) {
                 access a;
@@ -96,56 +120,46 @@ namespace picojson {
             value_converter<T>::from_value(v, t);
         };
 
-        class access {
-            object o;
+        template<typename T>
+        void access::operator & (key_value<T> kv) {
+            o[kv.key] = to_value(kv.value); 
+        }
 
-        public:
-            template<typename T>
-            void operator & (key_value<T> kv) {
-                o[kv.key] = to_value(kv.value); 
-            }
+        inline std::string access::serialize() const {
+            return get_value().serialize();
+        }
 
-            std::string serialize() const {
-                return get_value().serialize();
-            }
-
-            value get_value() const {
-                return value(o);
-            }
-        };
+        inline value access::get_value() const {
+            return value(o);
+        }
 
         template <typename T>
-		class write_access {
-			T& t;
-			value const& v;
+		write_access<T>::write_access(value const& v_,T& t_) :t(t_),v(v_){}
 
-		public:
-			write_access(value const& v_,T& t_) :t(t_),v(v_){}
+        template <typename T>
+		template<typename TT>
+		void write_access<T>::operator & (key_value<TT> kv) {
+			if ( !v.is<picojson::object>() )
+				return;
 
-			template<typename TT>
-			void operator & (key_value<TT> kv) {
-				if ( !v.is<picojson::object>() )
-					return;
+			picojson::object const& o = v.get<picojson::object>();
+			picojson::object::const_iterator found =
+				o.find(kv.key);
+			if ( found == o.end() )
+				return;
 
-				picojson::object const& o = v.get<picojson::object>();
-				picojson::object::const_iterator found =
-					o.find(kv.key);
-				if ( found == o.end() )
-					return;
-
-				if ( found->second.is<picojson::object>() ) {
-					from_value(found->second, kv.value);
-					return;
-				}
-
-				if ( found->second.is<picojson::array>() ) {
-					from_value(found->second,kv.value);
-					return;
-				}
-
-				value_converter<TT>::from_value(found->second, kv.value);
+			if ( found->second.is<picojson::object>() ) {
+				from_value(found->second, kv.value);
+				return;
 			}
-		};
+
+			if ( found->second.is<picojson::array>() ) {
+				from_value(found->second,kv.value);
+				return;
+			}
+
+			value_converter<TT>::from_value(found->second, kv.value);
+		}
 
         template <typename T>
         struct value_converter<T, typename enable_if< has_json_member<T>::value >::type> {

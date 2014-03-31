@@ -173,6 +173,7 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/custom_converter_example.o \
+	$(OBJDIR)/nonintrusive_test.o \
 	$(OBJDIR)/test.o \
 	$(OBJDIR)/vector_test.o \
 	$(OBJDIR)/map_test.o \
@@ -242,6 +243,9 @@ endif
 endif
 
 $(OBJDIR)/custom_converter_example.o: ../test/custom_converter_example.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/nonintrusive_test.o: ../test/nonintrusive_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/test.o: ../test/test.cpp
