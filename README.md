@@ -160,7 +160,16 @@ Class2 c2=picojson::project::from(c1).onto<Class2>();
 status
 ------
 
-+Lots of to-dos.
+TODO:
+
+Non-intrusive serialization definition i.e.
+
+```cpp
+struct X{ ... };
+
+template<class Archive>
+void json(Archive & ar, X& x) { ... }
+```
 
 license
 =======
