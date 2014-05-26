@@ -192,7 +192,7 @@ namespace picojson {
 
 			template<typename T>
 			T from_value(picojson::value const& v) {
-				T t;
+				T t{}; //Fixes unititialized data warnings from GCC
 				value_converter<T>::from_value(v, t);
 				return t;
 			}
