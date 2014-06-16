@@ -58,3 +58,32 @@ bool is(picojson::array const& a, size_t pos)
 
     return false;
 }
+
+template <typename T>
+bool is(picojson::value const& ov, size_t pos, T const& t) {
+    if ( !ov.is<picojson::array>() )
+        return false;
+
+    return is<T>(ov.get<picojson::array>(), pos, t);
+}
+
+template <typename T>
+bool is(picojson::value const& ov, size_t pos) {
+    if ( !ov.is<picojson::array>() )
+        return false;
+
+    return is<T>(ov.get<picojson::array>(), pos);
+}
+
+template <typename T>
+bool is(picojson::value const& ov, T const& t) {
+    if ( !ov.is<T>() )
+        return false;
+
+    return ov.get<T>() == t;
+}
+
+template <typename T>
+bool is(picojson::value const& ov) {
+    return ov.is<T>();
+}
