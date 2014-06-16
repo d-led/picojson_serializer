@@ -16,25 +16,27 @@
 namespace picojson {
     namespace convert {
 
-        // Comparable functionality to
-        // http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Member_Detector 
-        // but also works for non-class types: gives value == false then.
-        // Drawback: the json member must be accessible (=public or friend)
-        // for correct detection.
+        /// http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Member_Detector
         template<typename T>
         class has_json_member
         {
-            typedef char TypeForFalse[1];
-            typedef char TypeForTrue[2];
+            struct Fallback { int json; };
+            struct Derived : T, Fallback { };
+
+            template<typename U, U> struct Check;
+
+            typedef char ArrayOfOne[1];  // typedef for an array of size one.
+            typedef char ArrayOfTwo[2];  // typedef for an array of size two.
 
             template<typename U> 
-            static TypeForTrue& func(char[][sizeof(&U::json)]);
+            static ArrayOfOne & func(Check<int Fallback::*, &U::json> *);
 
             template<typename U> 
-            static TypeForFalse& func(...);
+            static ArrayOfTwo & func(...);
 
         public:
-            enum { value = sizeof(func<T>(0)) == sizeof(TypeForTrue) };
+            typedef has_json_member type;
+            enum { value = sizeof(func<Derived>(0)) == 2 };
         };
 
         // pre-c++11  enable_if (http://en.cppreference.com/w/cpp/types/enable_if)
