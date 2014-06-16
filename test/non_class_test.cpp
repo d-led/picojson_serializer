@@ -46,4 +46,9 @@ TEST_CASE("Non-class type") {
 
     }
 
+    SECTION("should not compile from predicate") {
+        wchar_t c(1);
+        //picojson::convert::to_value(c);
+    }
+
 }
