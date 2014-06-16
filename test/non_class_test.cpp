@@ -29,7 +29,7 @@ TEST_CASE("Non-class type") {
 
         float f(1.2f);
         picojson::value pv = picojson::convert::to_value(f);
-        CHECK(is<double>(pv, 1.2f));
+        CHECK(is<double>(pv, static_cast<double>(1.2f)));
 
         SECTION("deserialization from value") {
             float f_(0.f);
