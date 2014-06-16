@@ -16,19 +16,42 @@
 namespace picojson {
     namespace convert {
 
+        /// Incomplete version of is_class
+        /// \todo Returns `true` for unions
+        template<typename T>
+        class is_class {
+            typedef char TypeForFalse[1];
+            typedef char TypeForTrue[2];
+
+            template<typename U>
+            static TypeForTrue& func(bool U::*);
+
+            template<typename U>
+            static TypeForFalse& func(...);
+
+        public:
+            enum { value = sizeof(func<T>(0)) == sizeof(TypeForTrue) };
+        };
+
         /// http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Member_Detector
+        /// \todo Fails to compile for unions
         template<typename T>
         class has_json_member
         {
             struct Fallback { int json; };
-            struct Derived : T, Fallback { };
+
+            template<typename U, bool really_is_class = is_class<U>::value>
+            struct Derived : U, Fallback { };
+
+            template<typename U>
+            struct Derived<U, false> : Fallback { };
 
             template<typename U, U> struct Check;
 
             typedef char ArrayOfOne[1];  // typedef for an array of size one.
             typedef char ArrayOfTwo[2];  // typedef for an array of size two.
 
-            template<typename U> 
+            template<typename U>
             static ArrayOfOne & func(Check<int Fallback::*, &U::json> *);
 
             template<typename U> 
@@ -36,7 +59,7 @@ namespace picojson {
 
         public:
             typedef has_json_member type;
-            enum { value = sizeof(func<Derived>(0)) == 2 };
+            enum { value = sizeof(func<Derived<T> >(0)) == 2 };
         };
 
         // pre-c++11  enable_if (http://en.cppreference.com/w/cpp/types/enable_if)
