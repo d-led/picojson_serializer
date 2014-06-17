@@ -49,9 +49,9 @@ TEST_CASE("custom serializer example") {
 	CHECK(has<double>(ev, "status", static_cast<int>(Example::SOME_OTHER)));
 
 	SECTION("const data") {
-		Example ec = { Example::NONE };
+		Example const ec = { Example::SOME };
 		ev = picojson::convert::to_value(ec);
-		CHECK(has<double>(ev, "status", static_cast<int>(Example::NONE)));
+		CHECK(has<double>(ev, "status", static_cast<int>(Example::SOME)));
 	}
 
 }
