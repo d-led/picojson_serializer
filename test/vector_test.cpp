@@ -66,6 +66,12 @@ TEST_CASE() {
 				CHECK_A(nnav);
             }
         }
+
+        SECTION("const data") {
+            A const ac(a);
+            av = picojson::convert::to_value(ac);
+            CHECK_A(av);
+        }
     }
 }
 
@@ -80,4 +86,13 @@ TEST_CASE("vector as root object") {
     picojson::convert::from_value(vv,v_);
     CHECK( v.size() == v_.size() );
     CHECK( v[1].x == v_[1].x );
+
+    SECTION("const data") {
+        std::vector<X> const vc(v);
+        vv=picojson::convert::to_value(vc);
+        v_.clear();
+        picojson::convert::from_value(vv,v_);
+        CHECK( vc.size() == v_.size() );
+        CHECK( vc[1].x == v_[1].x );
+    }
 }
