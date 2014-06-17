@@ -28,6 +28,14 @@ TEST_CASE("map serialization") {
     X y={};
     picojson::convert::from_value<X>(xv,y);
     CHECK( x.x == y.x );
+
+    SECTION("const data") {
+        X const xc(x);
+        xs=picojson::convert::to_string(xc);
+        y.x.clear();
+        picojson::convert::from_value<X>(xv,y);
+        CHECK( xc.x == y.x );
+    }
 }
 
 TEST_CASE("map as root object") {
@@ -39,6 +47,15 @@ TEST_CASE("map as root object") {
     picojson::convert::from_value(mv,m_);
     CHECK( m_[1] == 2 );
     CHECK( m_[3] == 4 );
+
+    SECTION("const data") {
+        std::map<int,int> const mc(m);
+        mv=picojson::convert::to_value(mc);
+        m_.clear();
+        picojson::convert::from_value(mv,m_);
+        CHECK( m_[1] == 2 );
+        CHECK( m_[3] == 4 );
+    }
 }
 
 TEST_CASE("multimap serialization") {
@@ -52,6 +69,16 @@ TEST_CASE("multimap serialization") {
     picojson::convert::from_value<X>(xv,y);
     CHECK( x.x == y.x );
     CHECK( x.y == y.y );
+
+    SECTION("const data") {
+        X const xc(x);
+        xs=picojson::convert::to_string(xc);
+        y.x.clear();
+        y.y.clear();
+        picojson::convert::from_value<X>(xv,y);
+        CHECK( xc.x == y.x );
+        CHECK( xc.y == y.y );
+    }
 }
 
 TEST_CASE("multimap as root object") {
@@ -64,4 +91,13 @@ TEST_CASE("multimap as root object") {
     std::multimap<int,int> m_;
     picojson::convert::from_value(mv,m_);
     CHECK( m_ == m );
+
+    SECTION("const data") {
+        std::multimap<int,int> const mc(m);
+        mv=picojson::convert::to_value(m);
+	ms=picojson::convert::to_string(m);
+        m_.clear();
+        picojson::convert::from_value(mv,m_);
+        CHECK( m_ == mc );
+    }
 }

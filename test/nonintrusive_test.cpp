@@ -52,6 +52,16 @@ TEST_CASE() {
         Untouchable example_deserialized = { 0 };
         picojson::convert::from_string( example_string, example_deserialized );
         CHECK( example.value == example_deserialized.value );
+
+        SECTION("const data") {
+            Untouchable const c_example = { 67 };
+            example_string = picojson::convert::to_string(c_example);
+
+            example_deserialized.value = 0;
+            picojson::convert::from_string( example_string, example_deserialized );
+            CHECK( c_example.value == example_deserialized.value );
+        }
+
     }
 
     SECTION("nonintrusive serialization") {
@@ -100,5 +110,20 @@ TEST_CASE() {
                 CHECK(npss.point.z == 3);
             }
         }
+
+        SECTION("const data") {
+            Point const pc = { 1, 2, 3 };
+            pv = picojson::convert::to_value(pc);
+            CHECK(has<double>(pv, "x", 1));
+            CHECK(has<double>(pv, "y", 2));
+            CHECK(has<double>(pv, "z", 3));
+
+            NamedPoint const npc = { test_point_name, p };
+
+            npv = picojson::convert::to_value(npc);
+            CHECK(has<std::string>(npv, "name", test_point_name));
+            CHECK(has<picojson::object>(npv, "point"));
+        }
+
     }
 }

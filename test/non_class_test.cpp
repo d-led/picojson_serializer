@@ -44,6 +44,12 @@ TEST_CASE("Non-class type") {
             }
         }
 
+	SECTION("const data") {
+            float const fc(2.3f);
+            picojson::value pv = picojson::convert::to_value(fc);
+            CHECK(is<double>(pv, 2.3f));
+        }
+
     }
 
     SECTION("should not compile from predicate") {

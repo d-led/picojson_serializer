@@ -66,6 +66,18 @@ namespace picojson {
         template <bool B, class T = void> struct enable_if {};
         template <class T> struct enable_if<true, T> { typedef T type; };
 
+        /// Type trait: is the type const qualified?
+        template<typename T>
+        struct is_const { enum { value = false }; };
+        template<typename T>
+        struct is_const<T const> { enum { value = true }; };
+
+        /// Type modifier: remove any const qualification
+        template<typename T>
+        struct remove_const { typedef T type; };
+        template<typename T>
+        struct remove_const<T const> { typedef T type; };
+
         template<typename T>
         struct key_value {
             std::string key;
@@ -103,9 +115,9 @@ namespace picojson {
         };
 
         template<typename T,class Enable = void> struct value_converter {
-            static value to_value(T& v) {
+            static value to_value(T const& v) {
                 access a;
-                json(a,v);
+                json(a,const_cast<T&>(v));  /// TODO: This is hacky and can cause undefined behaviour
                 return a.get_value();
             }
 
@@ -134,7 +146,7 @@ namespace picojson {
         };
 
         template <typename T>
-        value to_value(T& t) {
+        value to_value(T const& t) {
             return value_converter<T>::to_value(t);
         };
 
@@ -184,11 +196,18 @@ namespace picojson {
 			value_converter<TT>::from_value(found->second, kv.value);
 		}
 
+        /// partial specialisations
+        template<typename T>
+        struct value_converter<T, typename enable_if<is_const<T>::value>::type>
+        {
+            static value to_value(T& v) { return value_converter<typename remove_const<T>::type>::to_value(v); }
+        };
+
         template <typename T>
         struct value_converter<T, typename enable_if< has_json_member<T>::value >::type> {
-            static value to_value(T& v) {
+            static value to_value(T const& v) {
                 access a;
-                v.json(a);
+                const_cast<T&>(v).json(a);  /// TODO: This is hacky and can cause undefined behaviour
                 return a.get_value();
             }
 
@@ -223,7 +242,7 @@ namespace picojson {
 			template <typename KeyType,typename ValueType>
 			value to_value(std::pair< KeyType, ValueType >const& p) {
 				picojson::object o;
-				o["Key"]=value_converter<KeyType>::to_value(const_cast<KeyType&>(p.first));
+				o["Key"]=value_converter<KeyType>::to_value(p.first);
 				o["Value"]=value_converter<ValueType>::to_value(p.second);
 				return value(o);
 			}

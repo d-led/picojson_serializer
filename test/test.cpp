@@ -80,5 +80,20 @@ TEST_CASE() {
                 CHECK(npss.point.z == 3);
             }
         }
+
+	SECTION("const data") {
+            Point const pc = { 1, 2, 3 };
+            pv = picojson::convert::to_value(pc);
+            CHECK(has<double>(pv, "x", 1));
+            CHECK(has<double>(pv, "y", 2));
+            CHECK(has<double>(pv, "z", 3));
+        
+            NamedPoint const npc = { test_point_name , p };
+
+            npv = picojson::convert::to_value(npc);
+            CHECK(has<std::string>(npv, "name", test_point_name));
+            CHECK(has<picojson::object>(npv, "point"));
+        }
+
     }
 }
