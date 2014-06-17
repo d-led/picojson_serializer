@@ -136,6 +136,12 @@ namespace picojson {
             static value to_value(std::string const& v) { return value(v); }
             static void from_value(value const& ov, std::string& v) { if ( ov.is<std::string>() ) v = ov.get<std::string>(); }
         };
+        template<> struct value_converter< char const* > {
+            static value to_value(char const* v) { return value(v); }
+        };
+        template<std::size_t n> struct value_converter< char const (&)[n] > {
+            static value to_value(char const (&v)[n]) { return value(v, n-1); }
+        };
         template<> struct value_converter< int > {
             static value to_value(int v) { return value(static_cast<double>(v)); }
             static void from_value(value const& ov, int& v) { if ( ov.is<double>() ) v = static_cast<int>(ov.get<double>()); }
@@ -148,6 +154,11 @@ namespace picojson {
         template <typename T>
         value to_value(T const& t) {
             return value_converter<T>::to_value(t);
+        };
+
+        template <std::size_t n>
+        value to_value(char const (&t)[n]) {
+            return value_converter<char const (&)[n]>::to_value(t);
         };
 
         template <typename T>
