@@ -298,6 +298,8 @@
     <ClInclude Include="..\test\test_helpers.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\test\const_strings_test.cpp">
+    </ClCompile>
     <ClCompile Include="..\test\custom_converter_example.cpp">
     </ClCompile>
     <ClCompile Include="..\test\map_test.cpp">

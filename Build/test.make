@@ -179,6 +179,7 @@ OBJECTS := \
 	$(OBJDIR)/map_test.o \
 	$(OBJDIR)/projections_test.o \
 	$(OBJDIR)/non_class_test.o \
+	$(OBJDIR)/const_strings_test.o \
 
 RESOURCES := \
 
@@ -262,6 +263,9 @@ $(OBJDIR)/projections_test.o: ../test/projections_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/non_class_test.o: ../test/non_class_test.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/const_strings_test.o: ../test/const_strings_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
