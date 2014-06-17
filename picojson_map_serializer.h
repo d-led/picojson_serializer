@@ -18,8 +18,8 @@ namespace picojson {
 
         template<typename ValueType, typename Key, class Compare, class Allocator> struct value_converter< std::map<Key, ValueType, Compare, Allocator> > {
             typedef typename std::map<Key, ValueType, Compare, Allocator> map_type;
-            
-            static value to_value(map_type& v) {
+
+            static value to_value(map_type const& v) {
                 picojson::array a;
 				std::transform(
 					v.begin(),
@@ -59,7 +59,7 @@ namespace picojson {
 
         template<typename ValueType, typename Key, class Compare, class Allocator> struct value_converter< std::multimap<Key, ValueType, Compare, Allocator> > {
             typedef typename std::multimap<Key, ValueType, Compare, Allocator> map_type;
-            
+
             static value to_value(map_type& v) {
                 picojson::array a;
 				std::transform(
@@ -67,6 +67,17 @@ namespace picojson {
 					v.end(),
 					std::back_inserter(a),
 					operators::to_value<Key,ValueType>
+				);
+                return value(a);
+            }
+
+            static value to_value(map_type const& v) {
+                picojson::array a;
+				std::transform(
+					v.begin(),
+					v.end(),
+					std::back_inserter(a),
+					operators::to_value<Key,ValueType const>
 				);
                 return value(a);
             }
