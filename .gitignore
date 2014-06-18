@@ -380,3 +380,8 @@ xcuserdata
 *.sublime-project
 
 *.sublime-workspace
+
+####
+# Local changes: compile results and the like
+/catch_test
+/catch_test.exe
