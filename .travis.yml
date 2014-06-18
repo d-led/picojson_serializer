@@ -1,5 +1,6 @@
 language: cpp
 
 script:
+  - ./premake4 gmake
   - make -C Build config=release
   - make #clang
