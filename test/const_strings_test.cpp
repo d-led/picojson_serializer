@@ -6,9 +6,10 @@
 
 TEST_CASE("const strings") {
 
-    char const a[] = "Compile time-sized array of char";
+    char const a[] = "Compile time-sized array of char\0with embedded null";
     picojson::value v = picojson::convert::to_value(a);
-    CHECK(is<std::string>(v, a));
+    std::string const as(a, sizeof(a)-1);
+    CHECK(is<std::string>(v, as));
 
     v = picojson::convert::to_value("normal usage");
     CHECK(is<std::string>(v, "normal usage"));
