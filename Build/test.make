@@ -172,14 +172,14 @@ ifeq ($(config),release64)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/const_strings_test.o \
 	$(OBJDIR)/custom_converter_example.o \
+	$(OBJDIR)/map_test.o \
+	$(OBJDIR)/non_class_test.o \
 	$(OBJDIR)/nonintrusive_test.o \
+	$(OBJDIR)/projections_test.o \
 	$(OBJDIR)/test.o \
 	$(OBJDIR)/vector_test.o \
-	$(OBJDIR)/map_test.o \
-	$(OBJDIR)/projections_test.o \
-	$(OBJDIR)/non_class_test.o \
-	$(OBJDIR)/const_strings_test.o \
 
 RESOURCES := \
 
@@ -244,28 +244,28 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
+$(OBJDIR)/const_strings_test.o: ../test/const_strings_test.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/custom_converter_example.o: ../test/custom_converter_example.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/map_test.o: ../test/map_test.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/non_class_test.o: ../test/non_class_test.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/nonintrusive_test.o: ../test/nonintrusive_test.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/projections_test.o: ../test/projections_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/test.o: ../test/test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/vector_test.o: ../test/vector_test.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/map_test.o: ../test/map_test.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/projections_test.o: ../test/projections_test.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/non_class_test.o: ../test/non_class_test.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/const_strings_test.o: ../test/const_strings_test.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
