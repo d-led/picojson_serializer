@@ -53,7 +53,22 @@ struct NamedPoint {
 };
 ````
 
-To enable `std::vector` serialization, use the header `picojson_vector_serializer.h`
+To enable `std::vector` serialization, use the header `picojson_vector_serializer.h` and likewise for the other supported container types.
+
+To serialize `const` data types (including the keys of `std::map`, `std::multimap`, `std::setz`, and `std::multiset`), the `json()` member must be overloaded for `const` objects. E.g.
+
+
+````cpp
+struct Foo {
+    friend class picojson::convert::access;
+    template<class Archive>
+    void json(Archive & ar) const
+    { /* ... */ }
+    template<class Archive>
+    void json(Archive & ar)
+    { /* ... */ }
+};
+````
 
 serializing
 -----------
@@ -183,6 +198,8 @@ container converters
 - vector
 - map
 - multimap
+- set
+- multiset
 
 
 mapping between unrelated types
