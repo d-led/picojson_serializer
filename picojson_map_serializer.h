@@ -25,7 +25,18 @@ namespace picojson {
 					v.begin(),
 					v.end(),
 					std::back_inserter(a),
-					operators::to_value<Key,ValueType>
+					operators::to_value_c<Key,ValueType>
+				);
+                return value(a);
+            }
+
+            static value to_value(map_type& v) {
+                picojson::array a;
+				std::transform(
+					v.begin(),
+					v.end(),
+					std::back_inserter(a),
+					operators::to_value_nc<Key,ValueType>
 				);
                 return value(a);
             }
@@ -66,7 +77,18 @@ namespace picojson {
 					v.begin(),
 					v.end(),
 					std::back_inserter(a),
-					operators::to_value<Key,ValueType>
+					operators::to_value_c<Key,ValueType>
+				);
+                return value(a);
+            }
+
+            static value to_value(map_type& v) {
+                picojson::array a;
+				std::transform(
+					v.begin(),
+					v.end(),
+					std::back_inserter(a),
+					operators::to_value_nc<Key,ValueType>
 				);
                 return value(a);
             }

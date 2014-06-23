@@ -12,6 +12,11 @@ namespace {
         X(int x) : x(x) { }
         friend class picojson::convert::access;
         template<class Archive>
+        void json(Archive & ar) const
+        {
+            ar & picojson::convert::member("x", x);
+        }
+        template<class Archive>
         void json(Archive & ar)
         {
             ar & picojson::convert::member("x", x);
@@ -32,6 +37,13 @@ namespace {
         M< int, X > y;
         M< X, X > z;
         friend class picojson::convert::access;
+        template<class Archive>
+        void json(Archive & ar) const
+        {
+            ar & picojson::convert::member("x", x);
+            ar & picojson::convert::member("y", y);
+            ar & picojson::convert::member("z", z);
+        }
         template<class Archive>
         void json(Archive & ar)
         {

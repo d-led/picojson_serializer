@@ -10,6 +10,11 @@ namespace {
         int x;
         friend class picojson::convert::access;
         template<class Archive>
+        void json(Archive & ar) const
+        {
+            ar & picojson::convert::member("x", x);
+        }
+        template<class Archive>
         void json(Archive & ar)
         {
             ar & picojson::convert::member("x", x);
@@ -20,6 +25,12 @@ namespace {
         std::vector<int> ints;
         std::vector<X> xx;
         friend class picojson::convert::access;
+        template<class Archive>
+        void json(Archive & ar) const
+        {
+            ar & picojson::convert::member("ints", ints);
+            ar & picojson::convert::member("xx", xx);
+        }
         template<class Archive>
         void json(Archive & ar)
         {

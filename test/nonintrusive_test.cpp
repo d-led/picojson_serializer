@@ -23,6 +23,13 @@ namespace picojson {
 namespace convert {
 
 template <class Archive>
+void json(Archive &ar, Point const &p) {
+    ar &picojson::convert::member("x", p.x);
+    ar &picojson::convert::member("y", p.y);
+    ar &picojson::convert::member("z", p.z);
+}
+
+template <class Archive>
 void json(Archive &ar, Point &p) {
     ar &picojson::convert::member("x", p.x);
     ar &picojson::convert::member("y", p.y);
@@ -30,9 +37,20 @@ void json(Archive &ar, Point &p) {
 }
 
 template <class Archive>
+void json(Archive &ar, NamedPoint const &p) {
+    ar &picojson::convert::member("name", p.name);
+    ar &picojson::convert::member("point", p.point);
+}
+
+template <class Archive>
 void json(Archive &ar, NamedPoint &p) {
     ar &picojson::convert::member("name", p.name);
     ar &picojson::convert::member("point", p.point);
+}
+
+template <class Archive>
+void json(Archive &ar, Untouchable const &u) {
+    ar &picojson::convert::member("value", u.value);
 }
 
 template <class Archive>

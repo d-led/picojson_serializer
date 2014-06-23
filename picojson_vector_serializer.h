@@ -17,17 +17,29 @@ namespace picojson {
     namespace convert{
 
         template<typename T,typename Allocator> struct value_converter< std::vector<T,Allocator> > {
-            static value to_value(typename std::vector<T, Allocator> const& v) {
+            typedef typename std::vector<T, Allocator> vector_type;
+
+            static value to_value(vector_type const& v) {
 				picojson::array a;
 				std::transform(
 					v.begin(),
 					v.end(),
 					std::back_inserter(a),
-					value_converter<T>::to_value);
+					operators::to_value_c<T>);
                 return value(a);
             }
 
-            static void from_value(value const& ov, typename std::vector<T, Allocator>& v) {
+            static value to_value(vector_type& v) {
+				picojson::array a;
+				std::transform(
+					v.begin(),
+					v.end(),
+					std::back_inserter(a),
+					operators::to_value_nc<T>);
+                return value(a);
+            }
+
+            static void from_value(value const& ov, vector_type& v) {
                 if ( !ov.is<picojson::array>() )
                     return;
 				picojson::array const& a = ov.get<picojson::array>();

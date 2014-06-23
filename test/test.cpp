@@ -10,6 +10,13 @@ namespace {
 
         friend class picojson::convert::access;
         template<class Archive>
+        void json(Archive & ar) const
+        {
+            ar & picojson::convert::member("x", x);
+            ar & picojson::convert::member("y", y);
+            ar & picojson::convert::member("z", z);
+        }
+        template<class Archive>
         void json(Archive & ar)
         {
             ar & picojson::convert::member("x", x);
@@ -23,6 +30,12 @@ namespace {
         Point point;
 
         friend class picojson::convert::access;
+        template<class Archive>
+        void json(Archive & ar) const
+        {
+            ar & picojson::convert::member("name", name);
+            ar & picojson::convert::member("point", point);
+        }
         template<class Archive>
         void json(Archive & ar)
         {

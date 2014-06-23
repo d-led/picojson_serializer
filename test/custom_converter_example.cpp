@@ -15,6 +15,11 @@ namespace {
 
 		friend class picojson::convert::access;
 		template<class Archive>
+		void json(Archive & ar) const
+		{
+			ar & picojson::convert::member("status", status);
+		}
+		template<class Archive>
 		void json(Archive & ar)
 		{
 			ar & picojson::convert::member("status", status);
