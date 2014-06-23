@@ -156,6 +156,12 @@ namespace picojson {
             static value to_value(bool v) { return value(v); }
             static void from_value(value const& ov, bool& v) { if ( ov.is<bool>() ) v = ov.get<bool>(); }
         };
+#ifdef PICOJSON_USE_INT64
+        template<> struct value_converter<int64_t> {
+            static value to_value(int64_t v) { return value(v); }
+            static void from_value(value const& ov, int64_t& v) { if ( ov.is<int64_t>() ) v = ov.get<int64_t>(); }
+        };
+#endif
 
         template <typename T>
         value to_value(T const& t) {
