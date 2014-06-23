@@ -292,11 +292,6 @@ namespace picojson {
 				return value(o);
 			}
 
-			template <typename KeyType,typename ValueType>
-			std::pair<KeyType,ValueType> from_value(picojson::value const& v) {
-				return std::pair<KeyType,ValueType>();//todo
-			}
-
 		}
     }
 }
