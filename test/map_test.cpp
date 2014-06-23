@@ -7,34 +7,67 @@
 
 namespace {
     struct X {
-        std::map< int, std::string > x;
-        std::map< int, std::string > y;
+        int x;
+        X() : x(0) { }
+        X(int x) : x(x) { }
+        friend class picojson::convert::access;
+        template<class Archive>
+        void json(Archive & ar)
+        {
+            ar & picojson::convert::member("x", x);
+        }
+    };
+
+    bool operator==(X const& lhs, X const& rhs) { return lhs.x == rhs.x; }
+    bool operator<(X const& lhs, X const& rhs) { return lhs.x < rhs.x; }
+
+    template<template<
+        class Key,
+        class T,
+        class Compare = std::less<Key>,
+        class Allocator = std::allocator<std::pair<const Key, T> >
+        > class M>
+    struct A {
+        M< int, std::string > x;
+        M< int, X > y;
+        M< X, X > z;
         friend class picojson::convert::access;
         template<class Archive>
         void json(Archive & ar)
         {
             ar & picojson::convert::member("x", x);
             ar & picojson::convert::member("y", y);
+            ar & picojson::convert::member("z", z);
         }
     };
 }
 
 TEST_CASE("map serialization") {
-    X x;
+    A<std::map> x;
     x.x[1]="42";
     x.x[3]="33";
+    x.y[2]=X(123);
+    x.y[4]=X(321);
+    x.z[X(0)]=X(5);
+    x.z[X(5)]=X(0);
     std::string xs=picojson::convert::to_string(x);
     picojson::value xv=picojson::convert::to_value(x);
-    X y={};
-    picojson::convert::from_value<X>(xv,y);
+    A<std::map> y={};
+    picojson::convert::from_value<A<std::map> >(xv,y);
     CHECK( x.x == y.x );
+    CHECK( x.y == y.y );
+    CHECK( x.z == y.z );
 
     SECTION("const data") {
-        X const xc(x);
+        A<std::map> const xc(x);
         xs=picojson::convert::to_string(xc);
         y.x.clear();
-        picojson::convert::from_value<X>(xv,y);
+        y.y.clear();
+        y.z.clear();
+        picojson::convert::from_value<A<std::map> >(xv,y);
         CHECK( xc.x == y.x );
+        CHECK( xc.y == y.y );
+        CHECK( xc.z == y.z );
     }
 }
 
@@ -59,25 +92,34 @@ TEST_CASE("map as root object") {
 }
 
 TEST_CASE("multimap serialization") {
-    X x;
-    x.y.insert(std::make_pair(1,"42"));
-    x.y.insert(std::make_pair(1,"11"));
-    x.x[3]="33";
+    A<std::multimap> x;
+    x.x.insert(std::make_pair(1, "42"));
+    x.x.insert(std::make_pair(1, "11"));
+    x.x.insert(std::make_pair(3, "33"));
+    x.y.insert(std::make_pair(2, X(123)));
+    x.y.insert(std::make_pair(2, X(0)));
+    x.y.insert(std::make_pair(4, X(321)));
+    x.z.insert(std::make_pair(X(0), X(5)));
+    x.z.insert(std::make_pair(X(0), X(2)));
+    x.z.insert(std::make_pair(X(5), X(0)));
     std::string xs=picojson::convert::to_string(x);
     picojson::value xv=picojson::convert::to_value(x);
-    X y={};
-    picojson::convert::from_value<X>(xv,y);
+    A<std::multimap> y={};
+    picojson::convert::from_value<A<std::multimap> >(xv,y);
     CHECK( x.x == y.x );
     CHECK( x.y == y.y );
+    CHECK( x.z == y.z );
 
     SECTION("const data") {
-        X const xc(x);
+        A<std::multimap> const xc(x);
         xs=picojson::convert::to_string(xc);
         y.x.clear();
         y.y.clear();
-        picojson::convert::from_value<X>(xv,y);
+        y.z.clear();
+        picojson::convert::from_value<A<std::multimap> >(xv,y);
         CHECK( xc.x == y.x );
         CHECK( xc.y == y.y );
+        CHECK( xc.z == y.z );
     }
 }
 
@@ -87,17 +129,19 @@ TEST_CASE("multimap as root object") {
     m.insert(std::make_pair(1,22));
     m.insert(std::make_pair(3,4));
     picojson::value mv=picojson::convert::to_value(m);
-	std::string ms=picojson::convert::to_string(m);
     std::multimap<int,int> m_;
     picojson::convert::from_value(mv,m_);
     CHECK( m_ == m );
 
     SECTION("const data") {
         std::multimap<int,int> const mc(m);
-        mv=picojson::convert::to_value(m);
-	ms=picojson::convert::to_string(m);
+        mv=picojson::convert::to_value(mc);
         m_.clear();
         picojson::convert::from_value(mv,m_);
-        CHECK( m_ == mc );
+        REQUIRE( m_.count(1) == 2u);
+        CHECK( m_.find(1)->second >= 2);
+        CHECK( m_.find(1)->second <= 3);
+        REQUIRE( m_.count(3) == 1u );
+        CHECK( m_.find(3)->second == 4 );
     }
 }
