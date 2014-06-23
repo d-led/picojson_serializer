@@ -55,7 +55,7 @@ struct NamedPoint {
 
 To enable `std::vector` serialization, use the header `picojson_vector_serializer.h` and likewise for the other supported container types.
 
-To serialize `const` data types (including the keys of `std::map`, `std::multimap`, `std::setz`, and `std::multiset`), the `json()` member must be overloaded for `const` objects. E.g.
+To serialize `const` data types (including the keys of `std::map`, `std::multimap`, `std::set`, and `std::multiset`), the `json()` member must be overloaded for `const` objects. E.g.
 
 
 ````cpp
