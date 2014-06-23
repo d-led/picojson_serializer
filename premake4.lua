@@ -35,7 +35,6 @@ function CompilerSpecificConfiguration()
 
 	configuration {"gmake"}
 		postbuildcommands  { "$(TARGET)" }
-		buildoptions { "-std=c++0x" }
 
 	configuration {"codeblocks" }
 		postbuildcommands { "$(TARGET_OUTPUT_FILE)"}
