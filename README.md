@@ -53,28 +53,6 @@ struct NamedPoint {
 };
 ````
 
-To enable `std::vector` serialization, use the header `picojson_vector_serializer.h` and likewise for the other supported container types.
-
-To serialize `const` data types (including the keys of `std::map`, `std::multimap`, `std::set`, and `std::multiset`), the `json()` member must be overloaded for `const` objects. The normal function template as explained above works on non-`const` objects (`Point` and `NamedPoint` in the above example). If a `const` object is to be serialized, an additional `const` version of the `json()` function must be defined. E.g.
-
-````cpp
-struct NamedPoint {
-    // ...
-    friend class picojson::convert::access;
-    template<class Archive>
-    void json(Archive & ar) const
-    {
-        ar & picojson::convert::member("name", name);
-        ar & picojson::convert::member("point", point);
-    }
-    template<class Archive>
-    void json(Archive & ar)
-    {
-        ar & picojson::convert::member("name", name);
-        ar & picojson::convert::member("point", point);
-    }
-};
-````
 
 serializing
 -----------
@@ -120,7 +98,7 @@ namespace picojson {
 
         template <class Archive>
         void json(Archive &ar, Untouchable &u) {
-            ar &picojson::convert::member("value", u.value);
+            ar & picojson::convert::member("value", u.value);
         }
 
     }
@@ -136,6 +114,37 @@ Untouchable example_deserialized = { 0 };
 picojson::convert::from_string( example_string, example_deserialized );
 CHECK( example.value == example_deserialized.value );
 ````
+
+serializing containers
+======================
+
+To enable `std::vector` serialization, use the header `picojson_vector_serializer.h` and likewise for the other supported container types.
+
+serializing const data
+======================
+
+To serialize `const` data types (including the keys of `std::map`, `std::multimap`, `std::set`, and `std::multiset`), the `json()` member must be overloaded for `const` objects. The normal `void(Archive&)` function template as explained above works on non-`const` objects (`Point` and `NamedPoint` in the above example). If a `const` object is to be serialized, an additional `const` version of the `json()` function must be defined. E.g.
+
+````cpp
+struct NamedPoint {
+    // in addition to the non-const version 
+    template<class Archive>
+    void json(Archive & ar) const
+    {
+        ar & picojson::convert::member("name", name);
+        ar & picojson::convert::member("point", point);
+    }
+};
+````
+
+Free function version can also be overloaded
+
+````cpp
+template <class Archive>
+void json(Archive &ar, Point const &p) {
+    ar & ...
+}
+```` 
 
 implementing custom value converters
 ------------------------------------
@@ -224,3 +233,12 @@ license
 Copyright 2013, Dmitry Ledentsov
 Copyright 2014, project contributors
 MIT License: http://www.opensource.org/licenses/mit-license.php
+
+
+dependencies
+============
+- [picojson](https://github.com/kazuho/picojson) as the main dependency
+- [msinttypes](https://code.google.com/p/msinttypes/) for in64 in MSVC
+- [premake](industriousone.com/premake) for generating build files
+
+Dependencies retain their respective licenses
