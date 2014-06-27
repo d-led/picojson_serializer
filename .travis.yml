@@ -1,16 +1,8 @@
 language: cpp
 
-os:
-  - linux
-  - osx
-
 compiler:
   - clang
   - gcc
-
-before_install:
-  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then ./travis/install_linux.sh; fi
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then ./travis/install_osx.sh; fi
 
 before_script:
   - premake4 gmake
