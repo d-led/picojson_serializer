@@ -9,7 +9,8 @@ compiler:
   - gcc
 
 before_install:
-  - travis/travis_${TRAVIS_OS_NAME}.sh
+  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then ./travis/install_linux.sh; fi
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then ./travis/install_osx.sh; fi
 
 before_script:
   - premake4 gmake
