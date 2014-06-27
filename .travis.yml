@@ -4,6 +4,11 @@ compiler:
   - clang
   - gcc
 
+before_install:
+  - sudo add-apt-repository --yes "ppa:codegear/release"
+  - sudo apt-get update
+  - sudo apt-get --yes install premake4
+
 before_script:
   - premake4 gmake
 
