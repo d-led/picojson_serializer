@@ -4,6 +4,10 @@ local definitions = {
 	dir = {
 		linux = "ls",
 		windows = "dir"
+	},
+	includedirs = {
+		linux = {},
+		windows = { './msinttypes' }
 	}
 }
 
@@ -48,6 +52,7 @@ local sln=solution "picojson_serializer"
     location "Build"
 	sln.absbasedir=path.getabsolute(sln.basedir)
 	configurations { "Debug", "Release" }
+	includedirs( cfg.includedirs )
 	platforms { "native" , "x32", "x64" }
 	includedirs {
 		sln.basedir,
