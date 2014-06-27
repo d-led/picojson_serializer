@@ -222,4 +222,5 @@ license
 =======
 
 Copyright 2013, Dmitry Ledentsov
+Copyright 2014, project contributors
 MIT License: http://www.opensource.org/licenses/mit-license.php
