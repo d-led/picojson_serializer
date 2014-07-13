@@ -5,6 +5,8 @@ This is a lightweight header-only solution for serializing objects to and from j
 
 [![Build Status](https://travis-ci.org/d-led/picojson_serializer.png?branch=master)](https://travis-ci.org/d-led/picojson_serializer)
 
+Current release: [v0.9.0](https://github.com/d-led/picojson_serializer/releases/tag/v0.9.0)
+
 usage
 =====
 

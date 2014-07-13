@@ -386,3 +386,4 @@ xcuserdata
 /catch_test
 /catch_test.exe
 BuildClang/
+*.gz
