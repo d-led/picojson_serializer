@@ -3,11 +3,13 @@ local OS=os.get()
 local definitions = {
 	dir = {
 		linux = "ls",
-		windows = "dir"
+		windows = "dir",
+		macosx = {}
 	},
 	includedirs = {
 		linux = {},
-		windows = { './msinttypes' }
+		windows = { './msinttypes' },
+		macosx = {}
 	}
 }
 
@@ -45,6 +47,7 @@ function CompilerSpecificConfiguration()
 
 	configuration { "vs*"}
 		postbuildcommands { "\"$(TargetPath)\"" }
+	configuration { "*" }
 end
 
 -- A solution contains projects, and defines the available configurations
