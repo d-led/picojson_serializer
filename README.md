@@ -228,9 +228,9 @@ Class2 c2=picojson::project::from(c1).onto<Class2>();
 license
 =======
 
-Copyright 2013, Dmitry Ledentsov
-Copyright 2014, project contributors
-MIT License: http://www.opensource.org/licenses/mit-license.php
+- Copyright 2013, Dmitry Ledentsov
+- Copyright 2014, project contributors 
+- [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
 
 dependencies
