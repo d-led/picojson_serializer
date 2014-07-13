@@ -16,7 +16,7 @@ local settings = {
 	}
 }
 
-make_console_app('test_ioc_cpp',
+make_console_app('picojson_serializer_test',
 	{
 		'./*.h',
 		'./test/*.cpp',
