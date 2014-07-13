@@ -1,7 +1,8 @@
 /**
 * picojson_serializer - a simple serialization solution based on picojson
 * --------------------------------------------------------
-* Copyright (C) 2013, Dmitry Ledentsov (d.ledentsov@gmail.com)
+* Copyright 2013, Dmitry Ledentsov (d.ledentsov@gmail.com)
+* Copyright 2014, project contributors
 *
 * This software is distributed under the MIT License. See notice at the end
 * of this file.
@@ -303,7 +304,8 @@ namespace picojson {
 }
 
 /**
-* Copyright (c) 2013 Dmitry Ledentsov
+* Copyright 2013 Dmitry Ledentsov
+* Copyright 2014, project contributors
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
