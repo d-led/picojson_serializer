@@ -15,3 +15,4 @@ before_script:
 script:
   - make -C Build config=release
   - make #clang
+  - make -C Build config=gcov
