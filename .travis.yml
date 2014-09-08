@@ -8,7 +8,6 @@ before_install:
   - sudo add-apt-repository --yes "ppa:codegear/release"
   - sudo apt-get update
   - sudo apt-get --yes install premake4
-  - git clone https://github.com/jaylyerly/cpp-coveralls.git
   - sudo pip install pyyaml
   - sudo pip install cpp-coveralls
 
