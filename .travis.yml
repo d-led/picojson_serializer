@@ -20,4 +20,5 @@ script:
   - make -C Build config=gcov
 
 after_success:
+  - "cd $TRAVIS_BUILD_DIR"
   - coveralls -r . -x .h --verbose -e test -e msinttypes -e Catch -e picojson -e /usr/include
