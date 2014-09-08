@@ -3,7 +3,7 @@ picojson serializer
 
 This is a lightweight header-only solution for serializing objects to and from json using the header-only library [picojson](https://github.com/kazuho/picojson). 
 
-[![Build Status](https://travis-ci.org/d-led/picojson_serializer.png?branch=master)](https://travis-ci.org/d-led/picojson_serializer)
+[![Build Status](https://travis-ci.org/d-led/picojson_serializer.png?branch=master)](https://travis-ci.org/d-led/picojson_serializer) [![Coverage Status](https://coveralls.io/repos/d-led/picojson_serializer/badge.png?branch=master)](https://coveralls.io/r/d-led/picojson_serializer?branch=master)
 
 Current release: [v0.9.0](https://github.com/d-led/picojson_serializer/releases/tag/v0.9.0)
 
