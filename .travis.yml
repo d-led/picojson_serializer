@@ -10,10 +10,8 @@ before_install:
   - sudo apt-get --yes install premake4
   - git clone https://github.com/jaylyerly/cpp-coveralls.git
   - sudo pip install pyyaml
-  - cd cpp-coveralls
-  - sudo python setup.py install 
-  - cd ..
-  
+  - sudo pip install cpp-coveralls
+
 before_script:
   - premake4 gmake
 
