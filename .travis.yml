@@ -23,4 +23,4 @@ script:
   - make -C Build config=gcov
 
 after_success:
-  - coveralls --extension .h --verbose --exclude test --exclude msinttypes --exclude Catch --exclude picojson
+  - coveralls --extension .h --verbose --exclude test --exclude msinttypes --exclude Catch --exclude picojson --exclude /usr/include
