@@ -19,3 +19,6 @@ script:
   - make -C Build config=release
   - make #clang
   - make -C Build config=gcov
+
+after_success:
+  - coveralls --exclude test --exclude msinttypes --exclude Catch --exclude picojson --gcov-options '\-lp'
