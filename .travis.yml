@@ -8,11 +8,10 @@ before_install:
   - sudo add-apt-repository --yes "ppa:codegear/release"
   - sudo apt-get update
   - sudo apt-get --yes install premake4
+  - git clone https://github.com/jaylyerly/cpp-coveralls.git
+  - cd cpp-coveralls
+  - sudo python setup.py install 
   
-install:
-  - sudo pip install cpp-coveralls
-  - sudo pip install pyyaml
-
 before_script:
   - premake4 gmake
 
@@ -22,4 +21,4 @@ script:
   - make -C Build config=gcov
 
 after_success:
-  - coveralls --exclude test --exclude msinttypes --exclude Catch --exclude picojson --gcov-options '\-lp'
+  - coveralls --verbose --e test --e msinttypes --e Catch --e picojson
