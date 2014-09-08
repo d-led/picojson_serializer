@@ -8,6 +8,8 @@ before_install:
   - sudo add-apt-repository --yes "ppa:codegear/release"
   - sudo apt-get update
   - sudo apt-get --yes install premake4
+  - sudo pip install pyyaml
+  - sudo pip install cpp-coveralls
 
 before_script:
   - premake4 gmake
@@ -15,3 +17,8 @@ before_script:
 script:
   - make -C Build config=release
   - make #clang
+  - make -C Build config=gcov
+
+after_success:
+  - "cd $TRAVIS_BUILD_DIR"
+  - coveralls -b Build -x .h --verbose -e test -e msinttypes -e Catch -e picojson -E /usr/include.*
