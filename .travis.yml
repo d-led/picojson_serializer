@@ -22,4 +22,4 @@ script:
   - make -C Build config=gcov
 
 after_success:
-  - coveralls --verbose --e test --e msinttypes --e Catch --e picojson
+  - coveralls --verbose --exclude test --exclude msinttypes --exclude Catch --exclude picojson
