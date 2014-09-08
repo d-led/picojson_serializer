@@ -21,4 +21,4 @@ script:
 
 after_success:
   - "cd $TRAVIS_BUILD_DIR"
-  - coveralls -r . -x .h --verbose -e test -e msinttypes -e Catch -e picojson -E /usr/include.*
+  - coveralls -b Build -x .h --verbose -e test -e msinttypes -e Catch -e picojson -E /usr/include.*
