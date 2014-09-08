@@ -11,6 +11,7 @@ before_install:
   
 install:
   - sudo pip install cpp-coveralls
+  - sudo pip install pyyaml
 
 before_script:
   - premake4 gmake
