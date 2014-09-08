@@ -10,7 +10,7 @@ before_install:
   - sudo apt-get --yes install premake4
   
 install:
-  - sudo pip install cpp-coveralls --use-mirrors
+  - sudo pip install cpp-coveralls
 
 before_script:
   - premake4 gmake
