@@ -33,7 +33,7 @@ namespace picojson {
 		public:
 			template <typename TOut>
 			TOut onto() {
-				TOut result;
+				TOut result = {};
 				onto(result);
 				return result;
 			}
