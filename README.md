@@ -17,7 +17,7 @@ Make sure `picojson.h` can be found, include `picojson_serialization.h`, no extr
 
 [Premake4](http://industriousone.com/premake) is included and can be used to generate build files in the Build folder. To build and run the tests, do:  
 
-    ./premake4 gmake
+    [path_to]/premake4 gmake
     make -C Build
 
 declaring objects as serializable
