@@ -1,5 +1,21 @@
 language: cpp
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "qszRgzWZ0T1RoITutxr0wJaAaAA7AMVEUuFOO/xUK1IeCL8esiok1Gix7u1OOGXWo09pWdKXyYR6IxaKTPuolDUWrZG+OdaO+zWsUQ9osMc1p7UtHAm/849ZVKXSs86c//nTlhkM4Gg7DVeYxNpTFF0dZ6lJX9Lm9vm0MarJ8nk="
+
+addons:
+  coverity_scan:
+    project:
+      name: "d-led/picojson_serializer"
+      description: "simple json serialization for c++"
+    notification_email: dmlled@yahoo.com
+    build_command_prepend: "premake4 gmake"
+    build_command:   "make -C Build config=release"
+    branch_pattern: master
+
 compiler:
   - clang
   - gcc
