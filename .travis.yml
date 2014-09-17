@@ -12,7 +12,6 @@ addons:
       name: "d-led/picojson_serializer"
       description: "simple json serialization for c++"
     notification_email: dmlled@yahoo.com
-    build_command_prepend: "premake4 gmake"
     build_command:   "make -C Build config=debug"
     branch_pattern: master
 
