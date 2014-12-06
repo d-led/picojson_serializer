@@ -94,7 +94,7 @@ TEST_CASE() {
             }
         }
 
-	SECTION("const data") {
+        SECTION("const data") {
             Point const pc = { 1, 2, 3 };
             pv = picojson::convert::to_value(pc);
             CHECK(has<double>(pv, "x", 1));
@@ -107,6 +107,5 @@ TEST_CASE() {
             CHECK(has<std::string>(npv, "name", test_point_name));
             CHECK(has<picojson::object>(npv, "point"));
         }
-
     }
 }
