@@ -12,7 +12,7 @@ addons:
       name: "d-led/picojson_serializer"
       description: "simple json serialization for c++"
     notification_email: dmlled@yahoo.com
-    build_command:   "make -C Build config=debug"
+    build_command:   "make -C Build/linux/gmake config=debug"
     branch_pattern: master
 
 compiler:
@@ -30,9 +30,9 @@ before_script:
   - premake4 gmake
 
 script:
-  - make -C Build config=release
+  - make -C Build/linux/gmake config=release
   - make #clang
-  - make -C Build config=gcov
+  - make -C Build/linux/gmake config=gcov
 
 after_success:
   - "cd $TRAVIS_BUILD_DIR"
