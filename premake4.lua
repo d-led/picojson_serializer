@@ -30,7 +30,6 @@ configuration { "linux", "gcov" }
 	flags { "Symbols" }
 	links { "gcov" }
 	buildoptions { "-coverage" }
-	print 'hoho'
 configuration { "*" }
 
 includedirs {
@@ -44,7 +43,7 @@ run_target_after_build()
 
 local release = dofile 'premake/release.lua'
 
-release.make_package(   {
+make_package(   {
             		'*.h',
             		'picojson/*',
             		'README.md'
