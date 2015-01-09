@@ -1,6 +1,4 @@
-_G.package.path=_G.package.path..[[;./?.lua;./?/?.lua]]
-
-assert( require 'premake.quickstart' )
+include 'premake'
 
 make_solution 'picojson_serializer'
 
@@ -10,7 +8,7 @@ local CURRENT_VERSION = 'v0.9.0'
 
 local OS = os.get()
 
-local settings = {
+local local_settings = {
 	includedirs = {
 		linux = {},
 		windows = { './msinttypes' },
@@ -36,12 +34,14 @@ includedirs {
 	'.',
 	'./Catch/single_include',
 	'./picojson',
-	settings.includedirs[OS]
+	local_settings.includedirs[OS]
 }
 
 run_target_after_build()
 
-make_package(   {
+local release = dofile 'premake/release.lua'
+
+release.make_package(   {
             		'*.h',
             		'picojson/*',
             		'README.md'
