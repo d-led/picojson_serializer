@@ -36,4 +36,4 @@ script:
 
 after_success:
   - "cd $TRAVIS_BUILD_DIR"
-  - coveralls -b Build/linux/gmake -x .h --verbose -e test -e msinttypes -e Catch -e picojson -e cov-int -E /usr/include.*
+  - coveralls -b Build/linux/gmake -x .h --verbose -e test -e msinttypes -e Catch -e picojson -e cov-int -E /usr/include.* || true
