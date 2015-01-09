@@ -2,7 +2,9 @@ include 'premake'
 
 make_solution 'picojson_serializer'
 
-configurations { "gcov" }
+platforms { 'native' }
+
+configurations { 'gcov' }
 
 local CURRENT_VERSION = 'v0.9.0'
 
@@ -28,6 +30,7 @@ configuration { "linux", "gcov" }
 	flags { "Symbols" }
 	links { "gcov" }
 	buildoptions { "-coverage" }
+	print 'hoho'
 configuration { "*" }
 
 includedirs {
