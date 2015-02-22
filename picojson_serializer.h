@@ -45,7 +45,7 @@ namespace picojson {
             struct Derived : U, Fallback { };
 
             template<typename U>
-            struct Derived<U, false> : Fallback { };
+            struct Derived<U, false> : Fallback{};
 
             template<typename U, U> struct Check;
 
@@ -55,7 +55,7 @@ namespace picojson {
             template<typename U>
             static ArrayOfOne & func(Check<int Fallback::*, &U::json> *);
 
-            template<typename U> 
+            template<typename U>
             static ArrayOfTwo & func(...);
 
         public:
@@ -65,19 +65,19 @@ namespace picojson {
 
         // pre-c++11  enable_if (http://en.cppreference.com/w/cpp/types/enable_if)
         template <bool B, class T = void> struct enable_if {};
-        template <class T> struct enable_if<true, T> { typedef T type; };
+        template <class T> struct enable_if < true, T > { typedef T type; };
 
         /// Type trait: is the type const qualified?
         template<typename T>
         struct is_const { enum { value = false }; };
         template<typename T>
-        struct is_const<T const> { enum { value = true }; };
+        struct is_const < T const > { enum { value = true }; };
 
         /// Type modifier: remove any const qualification
         template<typename T>
         struct remove_const { typedef T type; };
         template<typename T>
-        struct remove_const<T const> { typedef T type; };
+        struct remove_const < T const > { typedef T type; };
 
         template<typename T>
         struct key_value {
@@ -109,53 +109,53 @@ namespace picojson {
             value const& v;
 
         public:
-            write_access(value const& v_,T& t_);
+            write_access(value const& v_, T& t_);
 
             template<typename TT>
             void operator & (key_value<TT> kv);
         };
 
-        template<typename T,class Enable = void> struct value_converter {
+        template<typename T, class Enable = void> struct value_converter {
             static value to_value(T const& v) {
                 access a;
-                json(a,v);
+                json(a, v);
                 return a.get_value();
             }
 
             static value to_value(T& v) {
                 access a;
-                json(a,v);
+                json(a, v);
                 return a.get_value();
             }
 
             static void from_value(value const& ov, T& v) {
-                write_access<T> a(ov,v);
-                json(a,v);
+                write_access<T> a(ov, v);
+                json(a, v);
             }
         };
 
         /// standard types
-        template<> struct value_converter<double> {
+        template<> struct value_converter < double > {
             static value to_value(double v) { return value(v); }
-            static void from_value(value const& ov, double& v) { if ( ov.is<double>() ) v = ov.get<double>(); }
+            static void from_value(value const& ov, double& v) { if (ov.is<double>()) v = ov.get<double>(); }
         };
-        template<> struct value_converter< std::string > {
+        template<> struct value_converter < std::string > {
             static value to_value(std::string const& v) { return value(v); }
-            static void from_value(value const& ov, std::string& v) { if ( ov.is<std::string>() ) v = ov.get<std::string>(); }
+            static void from_value(value const& ov, std::string& v) { if (ov.is<std::string>()) v = ov.get<std::string>(); }
         };
-        template<> struct value_converter< char const* > {
+        template<> struct value_converter < char const* > {
             static value to_value(char const* v) { return value(v); }
         };
-        template<std::size_t n> struct value_converter< char const (&)[n] > {
-            static value to_value(char const (&v)[n]) { return value(v, n-1); }
+        template<std::size_t n> struct value_converter < char const (&)[n] > {
+            static value to_value(char const (&v)[n]) { return value(v, n - 1); }
         };
-        template<> struct value_converter< int > {
+        template<> struct value_converter < int > {
             static value to_value(int v) { return value(static_cast<double>(v)); }
-            static void from_value(value const& ov, int& v) { if ( ov.is<double>() ) v = static_cast<int>(ov.get<double>()); }
+            static void from_value(value const& ov, int& v) { if (ov.is<double>()) v = static_cast<int>(ov.get<double>()); }
         };
-        template<> struct value_converter< bool > {
+        template<> struct value_converter < bool > {
             static value to_value(bool v) { return value(v); }
-            static void from_value(value const& ov, bool& v) { if ( ov.is<bool>() ) v = ov.get<bool>(); }
+            static void from_value(value const& ov, bool& v) { if (ov.is<bool>()) v = ov.get<bool>(); }
         };
 #ifdef PICOJSON_USE_INT64
         template<> struct value_converter<int64_t> {
@@ -186,7 +186,7 @@ namespace picojson {
 
         template<typename T>
         void access::operator & (key_value<T> kv) {
-            o[kv.key] = to_value(kv.value); 
+            o[kv.key] = to_value(kv.value);
         }
 
         inline std::string access::serialize() const {
@@ -198,42 +198,42 @@ namespace picojson {
         }
 
         template <typename T>
-		write_access<T>::write_access(value const& v_,T& t_) :t(t_),v(v_){}
+        write_access<T>::write_access(value const& v_, T& t_) :t(t_), v(v_){}
 
         template <typename T>
-		template<typename TT>
-		void write_access<T>::operator & (key_value<TT> kv) {
-			if ( !v.is<picojson::object>() )
-				return;
+        template<typename TT>
+        void write_access<T>::operator & (key_value<TT> kv) {
+            if (!v.is<picojson::object>())
+                return;
 
-			picojson::object const& o = v.get<picojson::object>();
-			picojson::object::const_iterator found =
-				o.find(kv.key);
-			if ( found == o.end() )
-				return;
+            picojson::object const& o = v.get<picojson::object>();
+            picojson::object::const_iterator found =
+                o.find(kv.key);
+            if (found == o.end())
+                return;
 
-			if ( found->second.is<picojson::object>() ) {
-				from_value(found->second, kv.value);
-				return;
-			}
+            if (found->second.is<picojson::object>()) {
+                from_value(found->second, kv.value);
+                return;
+            }
 
-			if ( found->second.is<picojson::array>() ) {
-				from_value(found->second,kv.value);
-				return;
-			}
+            if (found->second.is<picojson::array>()) {
+                from_value(found->second, kv.value);
+                return;
+            }
 
-			value_converter<TT>::from_value(found->second, kv.value);
-		}
+            value_converter<TT>::from_value(found->second, kv.value);
+        }
 
         /// partial specialisations
         template<typename T>
-        struct value_converter<T, typename enable_if<is_const<T>::value>::type>
+        struct value_converter < T, typename enable_if<is_const<T>::value>::type >
         {
             static value to_value(T& v) { return value_converter<typename remove_const<T>::type>::to_value(v); }
         };
 
         template <typename T>
-        struct value_converter<T, typename enable_if< has_json_member<T>::value >::type> {
+        struct value_converter < T, typename enable_if< has_json_member<T>::value >::type > {
             static value to_value(T const& v) {
                 access a;
                 v.json(a);
@@ -247,7 +247,7 @@ namespace picojson {
             }
 
             static void from_value(value const& ov, T& v) {
-                write_access<T> a(ov,v);
+                write_access<T> a(ov, v);
                 v.json(a);
             }
         };
@@ -258,48 +258,48 @@ namespace picojson {
         }
 
         template < typename T>
-        void from_string(std::string const& json,T& t) {
+        void from_string(std::string const& json, T& t) {
             picojson::value v;
-	    std::string err;
-            picojson::parse(v, json.begin(), json.end(),&err);
+            std::string err;
+            picojson::parse(v, json.begin(), json.end(), &err);
             from_value(v, t);
         }
 
-		namespace operators {
+        namespace operators {
 
-			template <typename T>
-			value to_value_c(T const& t) {
-                                return to_value(t);
-			}
-			template <typename T>
-			value to_value_nc(T& t) {
-                                return to_value(t);
-			}
+            template <typename T>
+            value to_value_c(T const& t) {
+                return to_value(t);
+            }
+            template <typename T>
+            value to_value_nc(T& t) {
+                return to_value(t);
+            }
 
-			template<typename T>
-			T from_value(picojson::value const& v) {
-				T t = T();
-				value_converter<T>::from_value(v, t);
-				return t;
-			}
+            template<typename T>
+            T from_value(picojson::value const& v) {
+                T t = T();
+                value_converter<T>::from_value(v, t);
+                return t;
+            }
 
-			template <typename KeyType,typename ValueType>
-			value to_value_c(std::pair< KeyType, ValueType > const& p) {
-				picojson::object o;
-				o["Key"]=value_converter<KeyType>::to_value(p.first);
-				o["Value"]=value_converter<ValueType>::to_value(p.second);
-				return value(o);
-			}
+            template <typename KeyType, typename ValueType>
+            value to_value_c(std::pair< KeyType, ValueType > const& p) {
+                picojson::object o;
+                o["Key"] = value_converter<KeyType>::to_value(p.first);
+                o["Value"] = value_converter<ValueType>::to_value(p.second);
+                return value(o);
+            }
 
-			template <typename KeyType,typename ValueType>
-			value to_value_nc(std::pair< KeyType const, ValueType >& p) {
-				picojson::object o;
-				o["Key"]=value_converter<KeyType>::to_value(p.first);
-				o["Value"]=value_converter<ValueType>::to_value(p.second);
-				return value(o);
-			}
+            template <typename KeyType, typename ValueType>
+            value to_value_nc(std::pair< KeyType const, ValueType >& p) {
+                picojson::object o;
+                o["Key"] = value_converter<KeyType>::to_value(p.first);
+                o["Value"] = value_converter<ValueType>::to_value(p.second);
+                return value(o);
+            }
 
-		}
+        }
     }
 }
 
