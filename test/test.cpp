@@ -114,7 +114,7 @@ TEST_CASE() {
 
         SECTION("cannot deserialize an object from an array") {
             picojson::array a;
-            a.emplace_back(picojson::convert::to_value(p1));
+            a.push_back(picojson::convert::to_value(p1));
 
             Point p2 = { 0, 0, 0 };
             picojson::convert::from_string(picojson::value(a).serialize(), p2);
