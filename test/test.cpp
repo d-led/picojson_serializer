@@ -110,13 +110,13 @@ TEST_CASE() {
     }
 
     SECTION("boundary cases") {
-        const Point p1{ 1, 2, 3 };
+        const Point p1 = { 1, 2, 3 };
 
         SECTION("cannot deserialize an object from an array") {
             picojson::array a;
             a.emplace_back(picojson::convert::to_value(p1));
 
-            Point p2{ 0, 0, 0 };
+            Point p2 = { 0, 0, 0 };
             picojson::convert::from_string(picojson::value(a).serialize(), p2);
 
             CHECK(p2.x == 0);
@@ -130,7 +130,7 @@ TEST_CASE() {
             p1v.get<picojson::object>()["z"] = picojson::value();
 
 
-            Point p2{ 42, 42, 42 };
+            Point p2 = { 42, 42, 42 };
             picojson::convert::from_value(p1v, p2);
 
             CHECK(p2.x == 1);
