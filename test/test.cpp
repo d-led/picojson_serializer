@@ -111,14 +111,31 @@ TEST_CASE() {
 
     SECTION("boundary cases") {
         const Point p1{ 1, 2, 3 };
-        picojson::array a;
-        a.emplace_back(picojson::convert::to_value(p1));
 
-        Point p2{ 0, 0, 0 };
-        picojson::convert::from_string(picojson::value(a).serialize(), p2);
+        SECTION("cannot deserialize an object from an array") {
+            picojson::array a;
+            a.emplace_back(picojson::convert::to_value(p1));
 
-        CHECK(p2.x == 0);
-        CHECK(p2.y == 0);
-        CHECK(p2.z == 0);
+            Point p2{ 0, 0, 0 };
+            picojson::convert::from_string(picojson::value(a).serialize(), p2);
+
+            CHECK(p2.x == 0);
+            CHECK(p2.y == 0);
+            CHECK(p2.z == 0);
+        }
+
+        SECTION("missing fields are ignored") {
+            picojson::value p1v(picojson::convert::to_value(p1));
+            REQUIRE(p1v.is<picojson::object>());
+            p1v.get<picojson::object>()["z"] = picojson::value();
+
+
+            Point p2{ 42, 42, 42 };
+            picojson::convert::from_value(p1v, p2);
+
+            CHECK(p2.x == 1);
+            CHECK(p2.y == 2);
+            CHECK(p2.z == 42);
+        }
     }
 }
