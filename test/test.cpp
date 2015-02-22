@@ -108,4 +108,17 @@ TEST_CASE() {
             CHECK(has<picojson::object>(npv, "point"));
         }
     }
+
+    SECTION("boundary cases") {
+        const Point p1{ 1, 2, 3 };
+        picojson::array a;
+        a.emplace_back(picojson::convert::to_value(p1));
+
+        Point p2{ 0, 0, 0 };
+        picojson::convert::from_string(picojson::value(a).serialize(), p2);
+
+        CHECK(p2.x == 0);
+        CHECK(p2.y == 0);
+        CHECK(p2.z == 0);
+    }
 }
