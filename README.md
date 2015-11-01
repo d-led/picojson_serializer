@@ -7,6 +7,8 @@ This is a lightweight header-only solution for serializing objects to and from j
 
 Current release: [v0.9.0](https://github.com/d-led/picojson_serializer/releases/tag/v0.9.0)
 
+a more feature-rich alternative: [cereal](https://github.com/USCiLab/cereal)
+
 usage
 =====
 
