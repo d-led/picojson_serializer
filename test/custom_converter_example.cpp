@@ -19,11 +19,6 @@ namespace {
 		{
 			ar & picojson::convert::member("status", status);
 		}
-		template<class Archive>
-		void json(Archive & ar)
-		{
-			ar & picojson::convert::member("status", status);
-		}
 	};
 }
 
