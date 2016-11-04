@@ -1,7 +1,7 @@
 picojson serializer
 ===================
 
-This is a lightweight header-only solution for serializing objects to and from json using the header-only library [picojson](https://github.com/kazuho/picojson). 
+This is a lightweight header-only solution for serializing objects to and from json using the header-only library [picojson](https://github.com/kazuho/picojson).
 
 [![Build Status](https://travis-ci.org/d-led/picojson_serializer.png?branch=master)](https://travis-ci.org/d-led/picojson_serializer) [![Coverage Status](https://coveralls.io/repos/d-led/picojson_serializer/badge.png?branch=master)](https://coveralls.io/r/d-led/picojson_serializer?branch=master) [![Coverity Status](https://scan.coverity.com/projects/3010/badge.svg)](https://scan.coverity.com/projects/3010)
 
@@ -17,9 +17,9 @@ building
 
 Make sure `picojson.h` can be found, include `picojson_serialization.h`, no extra build steps necessary.
 
-[Premake4](http://industriousone.com/premake) is included and can be used to generate build files in the Build folder. To build and run the tests, do:  
+[Premake5](https://premake.github.io/) is included and can be used to generate build files in the Build folder. To build and run the tests, do:
 
-    [path_to]/premake4 gmake
+    [path_to]/premake5 gmake
     make -C Build
 
 declaring objects as serializable
@@ -139,7 +139,7 @@ To serialize `const` data types (including the keys of `std::map`, `std::multima
 
 ````cpp
 struct NamedPoint {
-    // in addition to the non-const version 
+    // in addition to the non-const version
     template<class Archive>
     void json(Archive & ar) const
     {
@@ -156,7 +156,7 @@ template <class Archive>
 void json(Archive &ar, Point const &p) {
     ar & ...
 }
-```` 
+````
 
 implementing custom value converters
 ------------------------------------
@@ -231,7 +231,7 @@ license
 =======
 
 - Copyright 2013, Dmitry Ledentsov
-- Copyright 2014, project contributors 
+- Copyright 2014, project contributors
 - [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
 
