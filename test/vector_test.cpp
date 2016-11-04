@@ -118,7 +118,8 @@ SCENARIO("initializing the object upon deserializaton") {
         A a;
         a.flag = 13;
         a.ints.push_back(1);
-        a.xx.push_back({ 42 });
+        X x = { 42 };
+        a.xx.push_back(x);
 
         std::string json = "{\"flag\":11,\"ints\":[2], \"xx\" : [{\"x\":33}]}";
 
