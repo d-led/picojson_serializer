@@ -265,6 +265,12 @@ namespace picojson {
             from_value(v, t);
         }
 
+        template < typename T>
+        void init_from_string(std::string const& json, T& t) {
+            t = T();
+            from_string(json, t);
+        }
+
         namespace operators {
 
             template <typename T>

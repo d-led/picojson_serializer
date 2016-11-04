@@ -8,12 +8,13 @@
 namespace {
     struct X {
         int x;
-        friend class picojson::convert::access;
+
         template<class Archive>
         void json(Archive & ar) const
         {
             ar & picojson::convert::member("x", x);
         }
+
         template<class Archive>
         void json(Archive & ar)
         {
@@ -22,20 +23,24 @@ namespace {
     };
 
     struct A {
+        int flag;
         std::vector<int> ints;
         std::vector<X> xx;
-        friend class picojson::convert::access;
+
         template<class Archive>
         void json(Archive & ar) const
         {
             ar & picojson::convert::member("ints", ints);
             ar & picojson::convert::member("xx", xx);
+            ar & picojson::convert::member("flag", flag);
         }
+
         template<class Archive>
         void json(Archive & ar)
         {
             ar & picojson::convert::member("ints", ints);
             ar & picojson::convert::member("xx", xx);
+            ar & picojson::convert::member("flag", flag);
         }
     };
 }
@@ -105,5 +110,41 @@ TEST_CASE("vector as root object") {
         picojson::convert::from_value(vv,v_);
         CHECK( vc.size() == v_.size() );
         CHECK( vc[1].x == v_[1].x );
+    }
+}
+
+SCENARIO("initializing the object upon deserializaton") {
+    GIVEN("a pre-filled object and a string to deserialize") {
+        A a;
+        a.flag = 13;
+        a.ints.push_back(1);
+        a.xx.push_back({ 42 });
+
+        std::string json = "{\"flag\":11,\"ints\":[2], \"xx\" : [{\"x\":33}]}";
+
+        WHEN("I deserialize the object *without* initialization") {
+            picojson::convert::from_string(json, a);
+
+            THEN("The object scalars are overwritten and vectors are appended") {
+                a.flag = 11;
+                REQUIRE(a.ints.size() == 2);
+                REQUIRE(a.ints[0] == 1);
+                REQUIRE(a.ints[1] == 2);
+                REQUIRE(a.xx.size() == 2);
+                REQUIRE(a.xx[1].x == 33);
+            }
+        }
+
+        WHEN("I deserialize the object *with* initialization") {
+            picojson::convert::init_from_string(json, a);
+
+            THEN("The object scalars are overwritten, but so are vectors") {
+                a.flag = 11;
+                REQUIRE(a.ints.size() == 1);
+                REQUIRE(a.ints[0] == 2);
+                REQUIRE(a.xx.size() == 1);
+                REQUIRE(a.xx[0].x == 33);
+            }
+        }
     }
 }
