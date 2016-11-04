@@ -5,7 +5,7 @@ This is a lightweight header-only solution for serializing objects to and from j
 
 [![Build Status](https://travis-ci.org/d-led/picojson_serializer.png?branch=master)](https://travis-ci.org/d-led/picojson_serializer) [![Coverage Status](https://coveralls.io/repos/d-led/picojson_serializer/badge.png?branch=master)](https://coveralls.io/r/d-led/picojson_serializer?branch=master) [![Coverity Status](https://scan.coverity.com/projects/3010/badge.svg)](https://scan.coverity.com/projects/3010)
 
-Current release: [v0.9.0](https://github.com/d-led/picojson_serializer/releases/tag/v0.9.0)
+Current release: [v0.10](https://github.com/d-led/picojson_serializer/releases/tag/v0.10)
 
 a more feature-rich alternative: [cereal](https://github.com/USCiLab/cereal)
 
