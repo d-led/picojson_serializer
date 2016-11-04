@@ -158,6 +158,13 @@ void json(Archive &ar, Point const &p) {
 }
 ````
 
+initializing the object upon serialization
+------------------------------------------
+
+as a convenience, the function `picojson::convert::init_from_string` can be used instead of `from_string`
+to default-initialize the object before deserialization.
+
+
 implementing custom value converters
 ------------------------------------
 
