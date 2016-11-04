@@ -25,8 +25,14 @@ before_install:
   - sudo pip install pyyaml
   - sudo pip install cpp-coveralls
 
+install:
+  - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha10/premake-5.0.0-alpha10-linux.tar.gz
+  - tar xvzf premake-5.0.0-alpha10-linux.tar.gz
+  - chmod +x premake5
+
+
 before_script:
-  - ./premake/premake5 gmake
+  - ./premake5 gmake
 
 script:
   - make -C Build/linux/gmake config=release
