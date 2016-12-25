@@ -76,10 +76,10 @@ TEST_CASE() {
             picojson::value nav = picojson::convert::to_value(na);
             CHECK_A(nav);
             SECTION("deserialization from string") {
-				A nna;
-				picojson::convert::from_string(as,nna);
-				picojson::value nnav=picojson::convert::to_value(nna);
-				CHECK_A(nnav);
+                A nna;
+                picojson::convert::from_string(as,nna);
+                picojson::value nnav=picojson::convert::to_value(nna);
+                CHECK_A(nnav);
             }
         }
 
